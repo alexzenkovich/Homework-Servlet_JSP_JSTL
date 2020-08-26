@@ -1,1 +1,1 @@
-# Homework-Servlet_JSP_JSTL
+Web project impl Servlet + JSP + JDBC
