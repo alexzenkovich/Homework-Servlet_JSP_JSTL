@@ -1,1 +1,1 @@
-Web project impl Servlet + JSP + JDBC
+Web project impl Servlet + JSP + JSTL

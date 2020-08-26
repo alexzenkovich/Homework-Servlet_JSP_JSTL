@@ -13,20 +13,22 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <javax.servlet.version>2.3</javax.servlet.version>
+        <javax.servlet.version>3.1.0</javax.servlet.version>
         <javax.servlet-jsp.version>2.2</javax.servlet-jsp.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
             <version>${javax.servlet-jsp.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
