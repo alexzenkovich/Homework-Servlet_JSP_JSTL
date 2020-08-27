@@ -11,7 +11,7 @@ public class UserDaoImpl implements UserDao{
     private static final List<User> USERS = new ArrayList<>();
 
     static {
-        USERS.add(new User("admin", "1", Role.ADMIN));
+//        USERS.add(new User("admin", "1", Role.ADMIN));
 //        USERS.add(new User("admin1", "1", Role.ADMIN));
     }
 

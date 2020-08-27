@@ -26,11 +26,9 @@ public class RegistrationController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
-
 
         User user = new User(login, password, Role.valueOf(role.toUpperCase()));
 

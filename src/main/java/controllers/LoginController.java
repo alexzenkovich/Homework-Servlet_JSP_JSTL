@@ -4,7 +4,7 @@ import model.Role;
 import model.User;
 import persistance.*;
 
-import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -13,29 +13,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @WebServlet(value = "/login", initParams = {
-        @WebInitParam(name = "admin1", value = "admin1;1"),
-        @WebInitParam(name = "admin2", value = "admin2;1")
+        @WebInitParam(name = "admin1", value = "admin;1"),
+        @WebInitParam(name = "admin2", value = "admin2;2")
 })
 public class LoginController extends HttpServlet {
 
     private final static UserDao USER_DAO = new UserDaoImpl();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void init() {
+        ServletContext context = getServletContext();
+        Enumeration<String> names = context.getInitParameterNames();
+        while (names.hasMoreElements()) {
+            String name = names.nextElement();
+            String value = context.getInitParameter(name);
+            String[] values = value.split(";");
+            String login = values[0];
+            String password = values[1];
+            USER_DAO.save(new User(login, password, Role.ADMIN));
+        }
+    }
 
-//        String[] params1 = getServletContext().getInitParameter("admin1").split(";");
-//        String[] params2 = getServletContext().getInitParameter("admin2").split(";");
-//        USER_DAO.save(new User(params1[0], params1[1], Role.ADMIN));
-//        USER_DAO.save(new User(params2[0], params2[1], Role.ADMIN));
-//
-//        if (params1.length > 0) {
-//            request.setAttribute("params", params1);
-//            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-//        } else {
-//            request.setAttribute("params", "no param");
-//            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-//        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String login = request.getParameter("login");
         String password = request.getParameter("password");
@@ -54,6 +55,7 @@ public class LoginController extends HttpServlet {
         }
 
         request.setAttribute("error", "Invalid user data");
+        request.setAttribute("params", USER_DAO.getUsers());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
     }

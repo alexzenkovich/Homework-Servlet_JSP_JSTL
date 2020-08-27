@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,14 +9,13 @@
 <body>
 
 <%
-    String[] params = ((String[]) request.getAttribute("params"));
+    List<User> params = ((List<User>) request.getAttribute("params"));
 
     if (params != null) {
-        for (int i = 0; i < params.length; i++) {
-            out.println("<h2>" + params[i] + "</h2>");
+        for (User u : params) {
+            out.println("<h2>" + u + "</h2>");
         }
     }
-
 %>
 
 <%
@@ -24,7 +24,6 @@
     if (error != null) {
         out.println("<h2>" + error + "</h2>");
     }
-
 %>
 
 <%
@@ -36,7 +35,7 @@
 
 <%@ include file="templates/login.jsp" %>
 
-<%@include file="templates/registration.jsp"%>>
+<%@include file="templates/registration.jsp"%>
 
 
 </body>
