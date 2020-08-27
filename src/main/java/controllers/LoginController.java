@@ -23,6 +23,7 @@ public class LoginController extends HttpServlet {
 
     private final static UserDao USER_DAO = new UserDaoImpl();
 
+    @Override
     public void init() {
         ServletContext context = getServletContext();
         Enumeration<String> names = context.getInitParameterNames();
