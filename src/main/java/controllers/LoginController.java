@@ -19,6 +19,7 @@ public class LoginController extends HttpServlet {
 
     private final UserDao USER_DAO = new UserDaoImpl();
 
+    @Override
     public void init() throws ServletException {
         String[] firstUser = getInitParameter("admin1").split(";");
         String[] secondUser = getInitParameter("admin2").split(";");
