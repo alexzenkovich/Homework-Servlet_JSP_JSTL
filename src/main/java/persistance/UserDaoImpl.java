@@ -10,20 +10,12 @@ public class UserDaoImpl implements UserDao{
 
     private static final List<User> USERS = new ArrayList<>();
 
-    static {
-//        USERS.add(new User("admin", "1", Role.ADMIN));
-//        USERS.add(new User("admin1", "1", Role.ADMIN));
-    }
-
-
     public User getUserByLoginAndPassword(String login, String password) {
-
         for (User user : USERS) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 return user;
             }
         }
-
         return null;
     }
 

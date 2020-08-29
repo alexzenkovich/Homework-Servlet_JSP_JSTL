@@ -1,10 +1,7 @@
 package controllers;
 
-import model.Role;
-import model.User;
+import model.*;
 import persistance.*;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -13,28 +10,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 
-@WebServlet(value = "/login", initParams = {
-        @WebInitParam(name = "admin1", value = "admin;1"),
-        @WebInitParam(name = "admin2", value = "admin2;2")
+@WebServlet(value = "/login", loadOnStartup = 1, initParams = {
+        @WebInitParam(name = "admin1", value = "admin1;1"),
+        @WebInitParam(name = "admin2", value = "admin2;1")
 })
 public class LoginController extends HttpServlet {
 
-    private final static UserDao USER_DAO = new UserDaoImpl();
+    private final UserDao USER_DAO = new UserDaoImpl();
 
     @Override
-    public void init() {
-        ServletContext context = getServletContext();
-        Enumeration<String> names = context.getInitParameterNames();
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-            String value = context.getInitParameter(name);
-            String[] values = value.split(";");
-            String login = values[0];
-            String password = values[1];
-            USER_DAO.save(new User(login, password, Role.ADMIN));
-        }
+    public void init() throws ServletException {
+        String[] firstUser = getInitParameter("admin1").split(";");
+        String[] secondUser = getInitParameter("admin2").split(";");
+
+        USER_DAO.save(new User(firstUser[0], firstUser[1], Role.ADMIN));
+        USER_DAO.save(new User(secondUser[0], secondUser[1], Role.ADMIN));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,7 +47,6 @@ public class LoginController extends HttpServlet {
         }
 
         request.setAttribute("error", "Invalid user data");
-        request.setAttribute("params", USER_DAO.getUsers());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 
     }

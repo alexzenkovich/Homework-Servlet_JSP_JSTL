@@ -1,7 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="model.Role" %>
-<%@ page import="model.User" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -10,31 +8,23 @@
 </head>
 <body>
 
-<%
-    User user = (User) request.getSession().getAttribute("user");
+<c:choose>
+    <c:when test="${sessionScope.user.role == Role.USER}"><c:out value="User data:"/></c:when>
+    <c:when test="${sessionScope.user.role == Role.ADMIN}"><c:out value="Admin data:"/></c:when>
+</c:choose><br><br>
+<c:out value="login: ${sessionScope.user.login}"/><br>
+<c:out value="password: ${sessionScope.user.password}"/><br>
+<c:out value="user`s status: ${sessionScope.user.role}"/><br>
 
-    if (user.getRole() == Role.USER) {
-        out.println("<h2>User data:</h2>");
-    } else if (user.getRole() == Role.ADMIN) {
-        out.println("<h2>Admin data:</h2>");
-    }
-    out.println(user.getLogin());
-    out.println(user.getPassword());
-    out.println(user.getRole());
-%>
-
-<%
-    if (user.getRole() == Role.ADMIN) {
-        List<User> users = ((List<User>) request.getAttribute("users"));
-
-        out.println("<h2>Users list:</h2>");
-        out.println("<ul>");
-        for (User u : users) {
-            out.println("<li>" + u + "</li>");
-        }
-        out.println("</ul>");
-    }
-%>
+<c:if test="${sessionScope.user.role == Role.ADMIN}">
+    <br>
+    <c:out value="Users list:"/><br>
+    <ul>
+        <c:forEach var="user" items="${requestScope.users}">
+            <li><c:out value="${user}"/></li><br>
+        </c:forEach>
+    </ul>
+</c:if>
 
 <form method="post" action="${pageContext.request.contextPath}/logout">
     <input type="submit" value="Log out">

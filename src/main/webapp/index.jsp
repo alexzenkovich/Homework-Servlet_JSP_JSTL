@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -8,34 +9,19 @@
 
 <body>
 
-<%
-    List<User> params = ((List<User>) request.getAttribute("params"));
+<c:if test="${requestScope.error != null}">
+    <h3>${requestScope.error}</h3>
+    <c:remove var="error" scope="request"/>
+</c:if>
 
-    if (params != null) {
-        for (User u : params) {
-            out.println("<h2>" + u + "</h2>");
-        }
-    }
-%>
+<c:if test="${requestScope.exists != null}">
+    <h3>${requestScope.exists}</h3>
+</c:if>
 
-<%
-    String error = ((String) request.getAttribute("error"));
-
-    if (error != null) {
-        out.println("<h2>" + error + "</h2>");
-    }
-%>
-
-<%
-    String exists = ((String) request.getAttribute("exists"));
-    if (exists != null) {
-        out.println("<h2>" + exists + "</h2>");
-    }
-%>
-
-<%@ include file="templates/login.jsp" %>
-
-<%@include file="templates/registration.jsp"%>
+<jsp:include page="templates/login.jsp"/>
+<%--<%@ include file="templates/login.jsp" %>--%>
+<jsp:include page="templates/registration.jsp"/>
+<%--<%@include file="templates/registration.jsp"%>--%>
 
 
 </body>

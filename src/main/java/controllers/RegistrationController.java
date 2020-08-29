@@ -13,13 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 
-
-@WebServlet(value = "/registration", initParams = {
-        @WebInitParam(name = "admin1", value = "admin1;1"),
-        @WebInitParam(name = "admin2", value = "admin2;1")
-})
+@WebServlet(value = "/registration")
 public class RegistrationController extends HttpServlet {
 
     private final static UserDaoImpl USER_DAO = new UserDaoImpl();
@@ -41,7 +36,7 @@ public class RegistrationController extends HttpServlet {
             getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
         }
 
-        request.setAttribute("exists", "login exists");
+        request.setAttribute("exists", "Login exists. Try again.");
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }
