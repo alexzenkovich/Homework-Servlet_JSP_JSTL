@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -7,16 +8,6 @@
 </head>
 
 <body>
-
-<%
-    List<User> params = ((List<User>) request.getAttribute("params"));
-
-    if (params != null) {
-        for (User u : params) {
-            out.println("<h2>" + u + "</h2>");
-        }
-    }
-%>
 
 <%
     String error = ((String) request.getAttribute("error"));
@@ -32,6 +23,7 @@
         out.println("<h2>" + exists + "</h2>");
     }
 %>
+
 
 <%@ include file="templates/login.jsp" %>
 

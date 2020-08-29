@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="model.Role" %>
 <%@ page import="model.User" %>
 <%@ page import="java.util.List" %>
