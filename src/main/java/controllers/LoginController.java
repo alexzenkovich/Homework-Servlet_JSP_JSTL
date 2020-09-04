@@ -2,6 +2,7 @@ package controllers;
 
 import model.*;
 import persistance.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -24,8 +25,8 @@ public class LoginController extends HttpServlet {
         String[] firstUser = getInitParameter("admin1").split(";");
         String[] secondUser = getInitParameter("admin2").split(";");
 
-        USER_DAO.save(new User(firstUser[0], firstUser[1], Role.ADMIN));
-        USER_DAO.save(new User(secondUser[0], secondUser[1], Role.ADMIN));
+        USER_DAO.create(new User(firstUser[0], firstUser[1], Role.ADMIN));
+        USER_DAO.create(new User(secondUser[0], secondUser[1], Role.ADMIN));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,21 +34,35 @@ public class LoginController extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        User user = USER_DAO.getUserByLoginAndPassword(login, password);
+        User user = null;
 
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            session.setMaxInactiveInterval(600);
-            if (user.getRole() == Role.ADMIN) {
-                request.setAttribute("users", USER_DAO.getUsers());
+        try {
+            if (login == null || login.isEmpty()) {
+                throw new RuntimeException("Invalid user login");
+            }
+            if (password == null || password.isEmpty()) {
+                throw new RuntimeException("Invalid user password");
+            }
+            user = USER_DAO.getUserByLoginAndPassword(login, password);
+            if (user == null) {
+                if (USER_DAO.isLoginExists(login)) {
+                    throw new RuntimeException("User already exists");
+                }
             }
 
-            getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+        } catch (RuntimeException e) {
+            request.getSession().setAttribute("error", e.getMessage());
+            response.sendRedirect("/index.jsp");
+            return;
         }
 
-        request.setAttribute("error", "Invalid user data");
-        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+        session.setMaxInactiveInterval(600);
+        assert user != null;
+        if (user.getRole() == Role.ADMIN) {
+            request.setAttribute("users", USER_DAO.getUsers());
+        }
+        getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
     }
 }

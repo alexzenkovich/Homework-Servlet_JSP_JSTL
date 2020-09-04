@@ -3,6 +3,7 @@ package model;
 import java.util.StringJoiner;
 
 public class User {
+    private long id;
     private String login;
     private String password;
     private Role role;
@@ -14,6 +15,14 @@ public class User {
         this.login = login;
         this.password = password;
         this.role = role;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLogin() {
@@ -40,12 +49,4 @@ public class User {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }

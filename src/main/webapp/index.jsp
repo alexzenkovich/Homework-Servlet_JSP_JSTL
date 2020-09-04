@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Index</title>
+    <title>Autentification</title>
 </head>
 
 <body>
@@ -19,9 +19,9 @@
 </c:if>
 
 <jsp:include page="templates/login.jsp"/>
-<%--<%@ include file="templates/login.jsp" %>--%>
+
 <jsp:include page="templates/registration.jsp"/>
-<%--<%@include file="templates/registration.jsp"%>--%>
+
 
 
 </body>

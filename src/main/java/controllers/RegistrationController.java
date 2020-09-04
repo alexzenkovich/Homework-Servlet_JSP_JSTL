@@ -27,7 +27,7 @@ public class RegistrationController extends HttpServlet {
 
         User user = new User(login, password, Role.valueOf(role.toUpperCase()));
 
-        user = USER_DAO.save(user);
+        user = USER_DAO.create(user);
 
         if (user != null) {
             HttpSession session = request.getSession();

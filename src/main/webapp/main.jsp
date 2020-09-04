@@ -21,7 +21,19 @@
     <c:out value="Users list:"/><br>
     <ul>
         <c:forEach var="user" items="${requestScope.users}">
-            <li><c:out value="${user}"/></li><br>
+            <li><c:out value="Id: ${user.id} | Login: ${user.login} | Password: ${user.password} | Role: ${user.role}"/><br>
+                <c:if test="${user.role != Role.ADMIN}">
+                    <c:set scope="request" var="userId" value="${user.id}"/>
+                    <c:url var="update" value="/change?action=update" scope="request">
+                        <c:param name="userId" value="${user.id}"/>
+                    </c:url>
+                    <a href="<c:out value="${update}"/>">change user to admin</a>
+                    <c:url var="delete" value="/change?action=delete" scope="request">
+                        <c:param name="userId" value="${user.id}"/>
+                    </c:url>
+                    <a href="<c:out value="${delete}"/>">delete</a>
+                </c:if>
+            </li><br>
         </c:forEach>
     </ul>
 </c:if>
