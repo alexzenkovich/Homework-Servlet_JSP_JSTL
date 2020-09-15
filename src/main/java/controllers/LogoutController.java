@@ -23,6 +23,5 @@ public class LogoutController extends HttpServlet {
         }
 
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-       // response.sendRedirect("/index.jsp");
     }
 }

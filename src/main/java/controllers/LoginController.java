@@ -2,6 +2,7 @@ package controllers;
 
 import model.*;
 import persistance.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -11,21 +12,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(value = "/login", loadOnStartup = 1, initParams = {
-        @WebInitParam(name = "admin1", value = "admin1;1"),
-        @WebInitParam(name = "admin2", value = "admin2;1")
+@WebServlet(urlPatterns = "/login", loadOnStartup = 1, initParams = {
+        @WebInitParam(name = "admin1", value = "Ivam;Ivanov;vanya@gmail.com;25;admin1;1"),
+        @WebInitParam(name = "admin2", value = "Peter;Petrov;petya@gmail.com;23;admin2;1")
 })
 public class LoginController extends HttpServlet {
 
-    private final UserDao USER_DAO = new UserDaoImpl();
+    private final UserDao userDao = new UserDaoImpl();
 
     @Override
     public void init() throws ServletException {
         String[] firstUser = getInitParameter("admin1").split(";");
         String[] secondUser = getInitParameter("admin2").split(";");
 
-        USER_DAO.save(new User(firstUser[0], firstUser[1], Role.ADMIN));
-        USER_DAO.save(new User(secondUser[0], secondUser[1], Role.ADMIN));
+        userDao.create(new User(firstUser[0], firstUser[1], firstUser[2], Integer.parseInt(firstUser[3]),
+                new Authenticate(firstUser[4], firstUser[5], false), Role.ADMINISTRATOR));
+        userDao.create(new User(secondUser[0], secondUser[1], secondUser[2], Integer.parseInt(secondUser[3]),
+                new Authenticate(secondUser[4], secondUser[5], false), Role.ADMINISTRATOR));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,21 +36,38 @@ public class LoginController extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        User user = USER_DAO.getUserByLoginAndPassword(login, password);
+        User user = null;
 
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            session.setMaxInactiveInterval(600);
-            if (user.getRole() == Role.ADMIN) {
-                request.setAttribute("users", USER_DAO.getUsers());
+        try {
+            if (login == null || login.isEmpty()) {
+                throw new RuntimeException("Invalid user login");
+            }
+            if (password == null || password.isEmpty()) {
+                throw new RuntimeException("Invalid user password");
+            }
+            if (!userDao.isLoginExists(login)) {
+                throw new RuntimeException("User already exists");
+            } else {
+                user = userDao.getUserByLoginAndPassword(login, password);
             }
 
-            getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+        } catch (RuntimeException e) {
+            request.getSession().setAttribute("error", e.getMessage());
+            response.sendRedirect("/index.jsp");
+            return;
         }
 
-        request.setAttribute("error", "Invalid user data");
-        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+        session.setMaxInactiveInterval(600);
+        assert user != null;
+        if (user.getRole() == Role.ADMINISTRATOR) {
+            request.setAttribute("users", userDao.getUsers());
+        }
+        getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 }

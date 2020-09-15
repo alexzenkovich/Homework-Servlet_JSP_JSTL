@@ -1,35 +1,72 @@
 package model;
 
-import java.util.StringJoiner;
-
 public class User {
-    private String login;
-    private String password;
+    private long id;
+    private String name;
+    private String surname;
+    private String email;
+    private int age;
+    private Authenticate authenticate;
     private Role role;
 
     public User() {
     }
 
-    public User(String login, String password, Role role) {
-        this.login = login;
-        this.password = password;
+    public User(String name, String surname, String email, int age, Authenticate authenticate, Role role) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.age = age;
+        this.authenticate = authenticate;
         this.role = role;
     }
 
-    public String getLogin() {
-        return login;
+    public long getId() {
+        return id;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Authenticate getAuthenticate() {
+        return authenticate;
+    }
+
+    public void setAuthenticate(Authenticate authenticate) {
+        this.authenticate = authenticate;
     }
 
     public Role getRole() {
@@ -43,8 +80,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", authenticate=" + authenticate +
                 ", role=" + role +
                 '}';
     }
