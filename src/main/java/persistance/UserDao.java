@@ -1,6 +1,6 @@
 package persistance;
 
-import model.User;
+import model.users.User;
 
 import java.util.List;
 

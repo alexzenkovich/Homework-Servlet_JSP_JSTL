@@ -1,8 +1,11 @@
 package controllers;
 
-import model.Authenticate;
-import model.Role;
-import model.User;
+import model.users.Authenticate;
+import model.users.Role;
+import model.users.User;
+import persistance.BookDao;
+import persistance.BookDaoImpl;
+import persistance.UserDao;
 import persistance.UserDaoImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(value = "/registration")
+@WebServlet(urlPatterns = "/registration")
 public class RegistrationController extends HttpServlet {
 
-    private final static UserDaoImpl USER_DAO = new UserDaoImpl();
+    private final UserDao userDao = new UserDaoImpl();
+    private final BookDao bookDao = new BookDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -30,16 +34,18 @@ public class RegistrationController extends HttpServlet {
         User user = new User(name, surname, email, age, new Authenticate(login, password, false),
                 Role.valueOf(role.toUpperCase()));
 
-        user = USER_DAO.create(user);
+        user = userDao.create(user);
 
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(600);
-            getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+            request.setAttribute("books", bookDao.getBooks());
+            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+        } else {
+            request.setAttribute("exists", "login exists");
+            request.setAttribute("books", bookDao.getBooks());
+            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
         }
-
-        request.setAttribute("exists", "login exists");
-        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

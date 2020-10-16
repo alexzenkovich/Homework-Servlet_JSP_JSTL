@@ -1,6 +1,7 @@
 package persistance;
 
-import model.User;
+import model.basket.Basket;
+import model.users.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,13 @@ public class UserDaoImpl implements UserDao{
                 .equals(password))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Invalid user authentification data"));
+    }
+
+    public Basket getBasketByUserId (long id) {
+        return USERS.values().stream().filter(user -> user.getId()==id)
+                .findFirst()
+                .map(User::getBasket)
+                .orElseThrow(() -> new RuntimeException("Whats wrong with basket"));
     }
 
     public boolean isLoginExists(String login) {

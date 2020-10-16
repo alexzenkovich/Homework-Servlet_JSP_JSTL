@@ -1,10 +1,10 @@
 package controllers;
 
-import model.*;
+import model.users.Role;
+import model.users.User;
 import persistance.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,24 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/login", loadOnStartup = 1, initParams = {
-        @WebInitParam(name = "admin1", value = "Ivam;Ivanov;vanya@gmail.com;25;admin1;1"),
-        @WebInitParam(name = "admin2", value = "Peter;Petrov;petya@gmail.com;23;admin2;1")
-})
+@WebServlet(urlPatterns = "/login")
 public class LoginController extends HttpServlet {
 
     private final UserDao userDao = new UserDaoImpl();
-
-    @Override
-    public void init() throws ServletException {
-        String[] firstUser = getInitParameter("admin1").split(";");
-        String[] secondUser = getInitParameter("admin2").split(";");
-
-        userDao.create(new User(firstUser[0], firstUser[1], firstUser[2], Integer.parseInt(firstUser[3]),
-                new Authenticate(firstUser[4], firstUser[5], false), Role.ADMINISTRATOR));
-        userDao.create(new User(secondUser[0], secondUser[1], secondUser[2], Integer.parseInt(secondUser[3]),
-                new Authenticate(secondUser[4], secondUser[5], false), Role.ADMINISTRATOR));
-    }
+    private final BookDao bookDao = new BookDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -52,7 +39,7 @@ public class LoginController extends HttpServlet {
             }
 
         } catch (RuntimeException e) {
-            request.getSession().setAttribute("error", e.getMessage());
+            request.setAttribute("error", e.getMessage());
             response.sendRedirect("/index.jsp");
             return;
         }
@@ -64,10 +51,7 @@ public class LoginController extends HttpServlet {
         if (user.getRole() == Role.ADMINISTRATOR) {
             request.setAttribute("users", userDao.getUsers());
         }
-        getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setAttribute("books", bookDao.getBooks());
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

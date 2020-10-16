@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="model.Role" %>
-<%@ page import="model.User" %>
+<%@ page import="model.users.Role" %>
+<%@ page import="model.users.User" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -15,6 +15,7 @@
     <c:when test="${sessionScope.user.role == Role.USER}"><c:out value="User data:"/></c:when>
     <c:when test="${sessionScope.user.role == Role.ADMINISTRATOR}"><c:out value="Admin data:"/></c:when>
 </c:choose><br><br>
+
 <c:out value="Id: ${sessionScope.user.id}"/><br>
 <c:out value="Name: ${sessionScope.user.name}"/><br>
 <c:out value="Surname: ${sessionScope.user.surname}"/><br>
@@ -22,6 +23,11 @@
 <c:out value="Age: ${sessionScope.user.age}"/><br>
 <c:out value="Login: ${sessionScope.user.authenticate.login}"/><br>
 <c:out value="Password: ${sessionScope.user.authenticate.password}"/><br>
+<c:if test="${sessionScope.user.role == Role.USER}">
+    <form method="post" action="templates/edit_profile.jsp">
+        <input type="submit" value="edit profile">
+    </form>
+</c:if>
 
 
 <c:if test="${sessionScope.user.role == Role.ADMINISTRATOR}">
@@ -44,14 +50,11 @@
                     <a href="<c:out value="${update}"/>">change user to admin</a>
                     <a href="<c:out value="${delete}"/>">delete</a>
                 </c:if>
-            </li><br>
+            </li>
+            <br>
         </c:forEach>
     </ul>
 </c:if>
-
-<form method="post" action="${pageContext.request.contextPath}/logout">
-    <input type="submit" value="Log out">
-</form>
 
 </body>
 </html>

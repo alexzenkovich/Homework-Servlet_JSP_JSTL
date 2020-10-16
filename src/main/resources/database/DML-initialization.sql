@@ -1,0 +1,25 @@
+INSERT INTO ROLES (ROLE, ID) VALUES ('guest', 1);
+INSERT INTO ROLES (ROLE, USER_ID) VALUES ('user', 2);
+INSERT INTO ROLES (ROLE, USER_ID) VALUES ('administrator', 2);
+
+INSERT INTO USERS (ID, NAME, SURNAME, EMAIL, AGE, AUTHENTICATE_ID, BASKET_ID)
+VALUES ('1', 'Ivan', 'Ivanov', 'vanya@gmail.com', '23', '1', '1');
+INSERT INTO USERS (ID, NAME, SURNAME, EMAIL, AGE, AUTHENTICATE_ID, BASKET_ID)
+VALUES ('2', 'Peter', 'Petrov', 'petya@gmail.com', '23', '2', '2');
+
+INSERT INTO AUTHENTICATE (ID, LOGIN, PASSWORD) VALUES ('1', 'admin1', '1');
+INSERT INTO AUTHENTICATE (ID, LOGIN, PASSWORD) VALUES ('2', 'admin2', '1');
+
+INSERT INTO USERS_ROLES (ID, USER_ID, ROLE_ID) VALUES ('1', '1', '3');
+INSERT INTO USERS_ROLES (ID, USER_ID, ROLE_ID) VALUES ('2', '2', '3');
+
+INSERT INTO BASKETS (ID, USER_ID) values ('1', '1');
+INSERT INTO BASKETS (ID, USER_ID) values ('2', '2');
+
+INSERT INTO BOOKS (AUTHOR, TITLE, PAGES, ACCESS) VALUES ( 'Arthur Haily', 'Airport', '5', 'false');
+INSERT INTO BOOKS (AUTHOR, TITLE, PAGES, ACCESS) VALUES ( 'Korney Chukovskiy', 'Aibolit', '4', 'true');
+INSERT INTO BOOKS (AUTHOR, TITLE, PAGES, ACCESS) VALUES ( 'Korney Chukovskiy', 'Aibolit', '4', 'false');
+INSERT INTO BOOKS (AUTHOR, TITLE, PAGES, ACCESS) VALUES ( 'Korney Chukovskiy', 'Moidodyr', '8', 'true');
+INSERT INTO BOOKS (AUTHOR, TITLE, PAGES, ACCESS) VALUES ( 'Korney Chukovskiy', 'Tarakanishche', '3', 'false');
+
+

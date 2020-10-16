@@ -1,12 +1,18 @@
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: aalex
+  Date: 27.09.2020
+  Time: 20:33
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Registration page</title>
+    <title>Title</title>
 </head>
 <body>
 <div id="action_form">
-    <form method="post" action="${pageContext.request.contextPath}/registration">
+    <form method="post" action="${pageContext.request.contextPath}/change">
         <p>
             Name: <input type="text" name="name" /> <br>
         </p>
@@ -25,10 +31,7 @@
         <p>
             Password: <input type="password" name="password" /> <br>
         </p>
-        <p>
-            Role: <input type="text" name="role" value="USER"/> <br>
-        </p>
-        <input type="submit" value="Registrate">
+        <input type="submit" value="save changes">
     </form>
 </div>
 </body>

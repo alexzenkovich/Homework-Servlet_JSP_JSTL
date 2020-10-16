@@ -1,7 +1,7 @@
 package controllers;
 
-import model.Role;
-import model.User;
+import model.users.Role;
+import model.users.User;
 import persistance.UserDao;
 import persistance.UserDaoImpl;
 
@@ -18,7 +18,36 @@ public class ChangeController extends HttpServlet {
     private final UserDao userDao = new UserDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String email = request.getParameter("email");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (name != null) {
+            user.setName(name);
+        }
+        if (surname != null) {
+            user.setSurname(surname);
+        }
+        if (email != null) {
+            user.setEmail(email);
+        }
+        if (age != 0) {
+            user.setAge(age);
+        }
+        if (login != null) {
+            user.getAuthenticate().setLogin(login);
+        }
+        if (password != null) {
+            user.getAuthenticate().setPassword(password);
+        }
+        userDao.update(user);
+        
+        getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
