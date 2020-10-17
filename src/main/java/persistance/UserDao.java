@@ -4,19 +4,31 @@ import model.users.User;
 
 import java.util.List;
 
-public interface UserDao {
+abstract class UserDao implements CrudDao<User>{
 
-    User create (User user);
 
-    User getById (long id);
+    @Override
+    public User create(User user) {
+        return null;
+    }
 
-    User getUserByLoginAndPassword(String login, String password);
+    @Override
+    public User getById(long id) {
+        return null;
+    }
 
-    boolean isLoginExists (String login);
+    @Override
+    public List<User> getAll() {
+        return null;
+    }
 
-    List<User> getUsers();
+    @Override
+    public void update(User user) {
 
-    void update (User user);
+    }
 
-    public void delete(long id);
+    @Override
+    public void delete(long id) {
+
+    }
 }

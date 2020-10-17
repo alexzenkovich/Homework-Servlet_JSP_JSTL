@@ -3,9 +3,8 @@ package controllers;
 import model.users.Authenticate;
 import model.users.Role;
 import model.users.User;
-import persistance.BookDao;
 import persistance.BookDaoImpl;
-import persistance.UserDao;
+import persistance.CrudDao;
 import persistance.UserDaoImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +17,8 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/registration")
 public class RegistrationController extends HttpServlet {
 
-    private final UserDao userDao = new UserDaoImpl();
-    private final BookDao bookDao = new BookDaoImpl();
+    private final UserDaoImpl userDao = new UserDaoImpl();
+    private final BookDaoImpl bookDao = new BookDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -34,17 +33,17 @@ public class RegistrationController extends HttpServlet {
         User user = new User(name, surname, email, age, new Authenticate(login, password, false),
                 Role.valueOf(role.toUpperCase()));
 
-        user = userDao.create(user);
+        userDao.create(user);
 
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(600);
-            request.setAttribute("books", bookDao.getBooks());
+            request.setAttribute("books", bookDao.getAll());
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
         } else {
             request.setAttribute("exists", "login exists");
-            request.setAttribute("books", bookDao.getBooks());
+            request.setAttribute("books", bookDao.getAll());
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }

@@ -1,24 +1,32 @@
 package persistance;
 
 import model.books.Book;
-import model.users.User;
 
 import java.util.List;
 
-public interface BookDao {
+public class BookDao implements CrudDao<Book> {
+    @Override
+    public Book create(Book book) {
+        return null;
+    }
 
-    Book create (Book book);
+    @Override
+    public Book getById(long id) {
+        return null;
+    }
 
-    Book getById (long id);
+    @Override
+    public List<Book> getAll() {
+        return null;
+    }
 
-    Book getBookByAuthor (String author);
+    @Override
+    public void update(Book book) {
 
-    Book getBookByTitle (String title);
+    }
 
-    List<Book> getBooks();
+    @Override
+    public void delete(long id) {
 
-    void update (Book book);
-
-    public void delete(long id);
+    }
 }
-

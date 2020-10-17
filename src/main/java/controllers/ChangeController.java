@@ -2,7 +2,7 @@ package controllers;
 
 import model.users.Role;
 import model.users.User;
-import persistance.UserDao;
+import persistance.CrudDao;
 import persistance.UserDaoImpl;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.io.IOException;
 @WebServlet(name = "ChangeController", urlPatterns = "/change")
 public class ChangeController extends HttpServlet {
 
-    private final UserDao userDao = new UserDaoImpl();
+    private final UserDaoImpl userDao = new UserDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
@@ -62,7 +62,7 @@ public class ChangeController extends HttpServlet {
                 user.setRole(Role.ADMINISTRATOR);
                 userDao.update(user);
                 if (admin.getRole() == Role.ADMINISTRATOR) {
-                    request.setAttribute("users", userDao.getUsers());
+                    request.setAttribute("users", userDao.getAll());
                 }
                 getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
                 return;
@@ -70,7 +70,7 @@ public class ChangeController extends HttpServlet {
             if (request.getParameter("action").equals("delete")) {
                 userDao.delete(userId);
                 if (admin.getRole() == Role.ADMINISTRATOR) {
-                    request.setAttribute("users", userDao.getUsers());
+                    request.setAttribute("users", userDao.getAll());
                 }
                 getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
             }

@@ -1,9 +1,6 @@
 package controllers;
 
-import persistance.BookDao;
 import persistance.BookDaoImpl;
-import persistance.UserDao;
-import persistance.UserDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +13,7 @@ import java.io.IOException;
 @WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 
-    private final BookDao bookDao = new BookDaoImpl();
+    private final BookDaoImpl bookDao = new BookDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -24,7 +21,7 @@ public class LogoutController extends HttpServlet {
             session.invalidate();
         }
 
-        request.setAttribute("books", bookDao.getBooks());
+        request.setAttribute("books", bookDao.getAll());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

@@ -4,9 +4,8 @@ import model.books.Book;
 import model.users.Authenticate;
 import model.users.Role;
 import model.users.User;
-import persistance.BookDao;
 import persistance.BookDaoImpl;
-import persistance.UserDao;
+import persistance.CrudDao;
 import persistance.UserDaoImpl;
 
 import javax.servlet.ServletException;
@@ -29,40 +28,40 @@ import java.io.IOException;
 })
 public class BooksController extends HttpServlet {
 
-    private final BookDao bookDao = new BookDaoImpl();
-    private final UserDao userDao = new UserDaoImpl();
+    private final BookDaoImpl bookDao = new BookDaoImpl();
+    private final UserDaoImpl crudDao = new UserDaoImpl();
 
-    @Override
-    public void init() throws ServletException {
-        String[] firstBook = getInitParameter("book1").split(";");
-        String[] secondBook = getInitParameter("book2").split(";");
-        String[] thirdBook = getInitParameter("book3").split(";");
-        String[] fourthBook = getInitParameter("book4").split(";");
-        String[] fifthBook = getInitParameter("book5").split(";");
-        String[] firstUser = getInitParameter("admin1").split(";");
-        String[] secondUser = getInitParameter("admin2").split(";");
-        String[] thirdUser = getInitParameter("user1").split(";");
-
-        bookDao.create(new Book(firstBook[0], firstBook[1], Integer.parseInt(firstBook[2]),
-                Boolean.parseBoolean(firstBook[3])));
-        bookDao.create(new Book(secondBook[0], secondBook[1], Integer.parseInt(secondBook[2]),
-                Boolean.parseBoolean(secondBook[3])));
-        bookDao.create(new Book(thirdBook[0], thirdBook[1], Integer.parseInt(thirdBook[2]),
-                Boolean.parseBoolean(thirdBook[3])));
-        bookDao.create(new Book(fourthBook[0], fourthBook[1], Integer.parseInt(fourthBook[2]),
-                Boolean.parseBoolean(fourthBook[3])));
-        bookDao.create(new Book(fifthBook[0], fifthBook[1], Integer.parseInt(fifthBook[2]),
-                Boolean.parseBoolean(fifthBook[3])));
-        userDao.create(new User(firstUser[0], firstUser[1], firstUser[2], Integer.parseInt(firstUser[3]),
-                new Authenticate(firstUser[4], firstUser[5], false), Role.ADMINISTRATOR));
-        userDao.create(new User(secondUser[0], secondUser[1], secondUser[2], Integer.parseInt(secondUser[3]),
-                new Authenticate(secondUser[4], secondUser[5], false), Role.ADMINISTRATOR));
-        userDao.create(new User(thirdUser[0], thirdUser[1], thirdUser[2], Integer.parseInt(thirdUser[3]),
-                new Authenticate(thirdUser[4], thirdUser[5], false), Role.USER));
-    }
+//    @Override
+//    public void init() throws ServletException {
+//        String[] firstBook = getInitParameter("book1").split(";");
+//        String[] secondBook = getInitParameter("book2").split(";");
+//        String[] thirdBook = getInitParameter("book3").split(";");
+//        String[] fourthBook = getInitParameter("book4").split(";");
+//        String[] fifthBook = getInitParameter("book5").split(";");
+//        String[] firstUser = getInitParameter("admin1").split(";");
+//        String[] secondUser = getInitParameter("admin2").split(";");
+//        String[] thirdUser = getInitParameter("user1").split(";");
+//
+//        bookDao.create(new Book(firstBook[0], firstBook[1], Integer.parseInt(firstBook[2]),
+//                Boolean.parseBoolean(firstBook[3])));
+//        bookDao.create(new Book(secondBook[0], secondBook[1], Integer.parseInt(secondBook[2]),
+//                Boolean.parseBoolean(secondBook[3])));
+//        bookDao.create(new Book(thirdBook[0], thirdBook[1], Integer.parseInt(thirdBook[2]),
+//                Boolean.parseBoolean(thirdBook[3])));
+//        bookDao.create(new Book(fourthBook[0], fourthBook[1], Integer.parseInt(fourthBook[2]),
+//                Boolean.parseBoolean(fourthBook[3])));
+//        bookDao.create(new Book(fifthBook[0], fifthBook[1], Integer.parseInt(fifthBook[2]),
+//                Boolean.parseBoolean(fifthBook[3])));
+//        crudDao.create(new User(firstUser[0], firstUser[1], firstUser[2], Integer.parseInt(firstUser[3]),
+//                new Authenticate(firstUser[4], firstUser[5], false), Role.ADMINISTRATOR));
+//        crudDao.create(new User(secondUser[0], secondUser[1], secondUser[2], Integer.parseInt(secondUser[3]),
+//                new Authenticate(secondUser[4], secondUser[5], false), Role.ADMINISTRATOR));
+//        crudDao.create(new User(thirdUser[0], thirdUser[1], thirdUser[2], Integer.parseInt(thirdUser[3]),
+//                new Authenticate(thirdUser[4], thirdUser[5], false), Role.USER));
+//    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("books", bookDao.getBooks());
+        request.setAttribute("books", bookDao.getAll());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

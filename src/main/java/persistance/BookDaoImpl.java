@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class BookDaoImpl implements BookDao {
+public class BookDaoImpl extends BookDao {
 
     private final static Map<Long, Book> BOOKS = new HashMap<>();
     private final static AtomicLong BOOKID = new AtomicLong(1);
@@ -17,7 +17,7 @@ public class BookDaoImpl implements BookDao {
         long id = BOOKID.getAndIncrement();
         book.setId(id);
         BOOKS.put(id, book);
-        return getById(id);
+        return book;
     }
 
     @Override
@@ -27,14 +27,12 @@ public class BookDaoImpl implements BookDao {
                 .orElseThrow(() -> new RuntimeException("No exists this book"));
     }
 
-    @Override
     public Book getBookByAuthor(String author) {
         return BOOKS.values().stream().filter(book -> book.getAuthor().equals(author))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("There is no books written by this author"));
     }
 
-    @Override
     public Book getBookByTitle(String title) {
         return BOOKS.values().stream().filter(book -> book.getTitle().equals(title))
                 .findFirst()
@@ -42,7 +40,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getBooks() {
+    public List<Book> getAll() {
         return new ArrayList<>(BOOKS.values());
     }
 

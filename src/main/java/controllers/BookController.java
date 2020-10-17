@@ -1,7 +1,6 @@
 package controllers;
 
 import model.books.Book;
-import persistance.BookDao;
 import persistance.BookDaoImpl;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,7 @@ import java.io.IOException;
 @WebServlet(name = "BookController", urlPatterns = "/book")
 public class BookController extends HttpServlet {
 
-    private final BookDao bookDao = new BookDaoImpl();
+    private final BookDaoImpl bookDao = new BookDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

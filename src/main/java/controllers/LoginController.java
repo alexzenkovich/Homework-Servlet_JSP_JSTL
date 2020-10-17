@@ -15,8 +15,8 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/login")
 public class LoginController extends HttpServlet {
 
-    private final UserDao userDao = new UserDaoImpl();
-    private final BookDao bookDao = new BookDaoImpl();
+    private final UserDaoImpl userDao = new UserDaoImpl();
+    private final BookDaoImpl bookDao = new BookDaoImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -49,9 +49,9 @@ public class LoginController extends HttpServlet {
         session.setMaxInactiveInterval(600);
         assert user != null;
         if (user.getRole() == Role.ADMINISTRATOR) {
-            request.setAttribute("users", userDao.getUsers());
+            request.setAttribute("users", userDao.getAll());
         }
-        request.setAttribute("books", bookDao.getBooks());
+        request.setAttribute("books", bookDao.getAll());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class BasketController extends HttpServlet {
 
     private final UserDaoImpl userDao = new UserDaoImpl();
-    private final BookDao bookDao = new BookDaoImpl();
+    private final BookDaoImpl bookDao = new BookDaoImpl();
     private final BasketDaoImpl basketDao = new BasketDaoImpl();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,7 +38,7 @@ public class BasketController extends HttpServlet {
                 req.setAttribute("basketMessage", "Book was added to your basket");
             }
             req.setAttribute("numberOfBooksInBasket", userDao.getById(user.getId()).getBasket().getBookcells().size());
-            req.setAttribute("books", bookDao.getBooks());
+            req.setAttribute("books", bookDao.getAll());
         }
         if ("deleteBook".equals(action)) {
             if (book != null) {
