@@ -1,4 +1,4 @@
-package persistance;
+package persistance.dao;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface CrudDao<T>{
 
     List<T> getAll();
 
-    void update (T t);
+    T update (T t);
 
     void delete(long id);
 }

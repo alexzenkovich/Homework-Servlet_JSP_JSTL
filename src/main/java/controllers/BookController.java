@@ -1,7 +1,7 @@
 package controllers;
 
 import model.books.Book;
-import persistance.BookDaoImpl;
+import persistance.dao.daoImpl.BookDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -2,8 +2,7 @@ package controllers;
 
 import model.users.Role;
 import model.users.User;
-import persistance.CrudDao;
-import persistance.UserDaoImpl;
+import persistance.dao.daoImpl.UserDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

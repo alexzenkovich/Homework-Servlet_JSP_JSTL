@@ -1,14 +1,12 @@
 package model.users;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode
 @ToString
+@Builder
 
 public class Authenticate {
     private long id;

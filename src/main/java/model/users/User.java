@@ -1,15 +1,13 @@
 package model.users;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import model.basket.Basket;
 
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode
 @ToString
+@Builder
 
 public class User {
     private long id;
@@ -19,7 +17,7 @@ public class User {
     private int age;
     private Authenticate authenticate;
     private Role role;
-    private final Basket basket = new Basket();
+    private Basket basket;
 
     public User(String name, String surname, String email, int age, Authenticate authenticate, Role role) {
         this.name = name;

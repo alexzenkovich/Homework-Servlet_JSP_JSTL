@@ -4,7 +4,9 @@ import model.basket.Basket;
 import model.basket.BasketCell;
 import model.books.Book;
 import model.users.User;
-import persistance.*;
+import persistance.dao.daoImpl.BasketDaoImpl;
+import persistance.dao.daoImpl.BookDaoImpl;
+import persistance.dao.daoImpl.UserDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

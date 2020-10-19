@@ -1,12 +1,7 @@
 package controllers;
 
-import model.books.Book;
-import model.users.Authenticate;
-import model.users.Role;
-import model.users.User;
-import persistance.BookDaoImpl;
-import persistance.CrudDao;
-import persistance.UserDaoImpl;
+import persistance.dao.daoImpl.BookDaoImpl;
+import persistance.dao.daoImpl.UserDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;

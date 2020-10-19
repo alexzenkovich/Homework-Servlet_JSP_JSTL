@@ -1,6 +1,6 @@
 package controllers;
 
-import persistance.BookDaoImpl;
+import persistance.dao.daoImpl.BookDaoImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
