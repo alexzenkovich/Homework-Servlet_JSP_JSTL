@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @WebServlet(name = "BasketController", urlPatterns = "/basket")
@@ -31,20 +32,21 @@ public class BasketController extends HttpServlet {
 
         User user = userDao.getById(userId);
         Book book = bookDao.getById(bookId);
-        Basket basket = userDao.getBasketByUserId(userId);
+        Basket basket = basketDao.getBasketByUserId(userId);
 
         if ("addBook".equals(action)) {
             if (book != null && basket != null) {
                 int daysForReading = Integer.parseInt(req.getParameter("daysForReading"));
-                basketDao.save(new BasketCell(book, LocalDate.now(), daysForReading));
+                BasketCell basketCell = new BasketCell(book, Timestamp.valueOf(String.valueOf(LocalDate.now())), daysForReading);
+                basketDao.addBasketCell(basketCell, basket.getId());
                 req.setAttribute("basketMessage", "Book was added to your basket");
             }
-            req.setAttribute("numberOfBooksInBasket", userDao.getById(user.getId()).getBasket().getBookcells().size());
+            req.setAttribute("numberOfBooksInBasket", userDao.getById(user.getId()).getBasket().getBasketcells().size());
             req.setAttribute("books", bookDao.getAll());
         }
         if ("deleteBook".equals(action)) {
             if (book != null) {
-                basketDao.delete(book.getId());
+                basketDao.deleteBasketCell(book.getId());
                 req.setAttribute("basketMessage", String.format("Book %s by author %s was deleted from your basket",
                         book.getTitle(), book.getAuthor()));
             }
@@ -64,7 +66,7 @@ public class BasketController extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
 
         try {
-            req.setAttribute("booksFromBasket", userDao.getById(user.getId()).getBasket().getBookcells());
+            req.setAttribute("booksFromBasket", userDao.getById(user.getId()).getBasket().getBasketcells());
         } catch (RuntimeException e) {
             req.setAttribute("emptyBasket", e.getMessage());
             resp.sendRedirect("/index.jsp");

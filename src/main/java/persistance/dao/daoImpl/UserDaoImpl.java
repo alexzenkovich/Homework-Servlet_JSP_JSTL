@@ -1,9 +1,6 @@
 package persistance.dao.daoImpl;
 
-import connection.DatabaseConnector;
 import exception.ApplicationBaseException;
-import model.basket.Basket;
-import model.users.Authenticate;
 import model.users.User;
 import persistance.dao.AbstractCrudDao;
 import persistance.mapper.ResultSetMapper;
@@ -14,16 +11,17 @@ import persistance.statement.StatementInitializer;
 import persistance.statement.impl.UserStatementInitializer;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl extends AbstractCrudDao<User> {
 
     private final JdbcSqlQueryHolder jdbcSqlQueryHolder;
-    private final StatementInitializer statementInitializer;
-    private final ResultSetMapper resultSetMapper;
+    private final StatementInitializer<User> statementInitializer;
+    private final ResultSetMapper<User> resultSetMapper;
 
     private final AuthenticateDaoImpl authenticateDao;
+    private final BasketDaoImpl basketDao;
+    private final RoleDaoImpl roleDao;
 
     public UserDaoImpl() {
         jdbcSqlQueryHolder = new UserSqlQueryHolder();
@@ -31,21 +29,36 @@ public class UserDaoImpl extends AbstractCrudDao<User> {
         resultSetMapper = new UserResultSetMapper();
 
         authenticateDao = new AuthenticateDaoImpl();
+        basketDao = new BasketDaoImpl();
+        roleDao = new RoleDaoImpl();
     }
 
     @Override
-    public User create (User user) {
+    public void create (User user) {
+        super.create(user);
         authenticateDao.create(user.getAuthenticate());
-        return super.create(user);
+        roleDao.create(user.getId(), user.getRole());
+        basketDao.create(user.getId());
+
     }
 
     @Override
     public User getById (long id) {
-        return super.getById(id);
+        User user = super.getById(id);
+        user.setAuthenticate(authenticateDao.getById(user.getId()));
+        user.setRole(roleDao.getRoleByUserId(user.getId()));
+        user.setBasket(basketDao.getBasketByUserId(user.getId()));
+        return user;
     }
 
     public List<User> getAll() {
-        return super.getAll();
+        List<User> users = super.getAll();
+        for (User u : users) {
+            u.setAuthenticate(authenticateDao.getById(u.getId()));
+            u.setRole(roleDao.getRoleByUserId(u.getId()));
+            u.setBasket(basketDao.getBasketByUserId(u.getId()));
+        }
+        return users;
     }
 
     public User update(User user) {
@@ -57,14 +70,19 @@ public class UserDaoImpl extends AbstractCrudDao<User> {
     }
 
     public User getUserByLoginAndPassword(String login, String password) {
+        User user = null;
         try (Connection con = getConnector().getConnection();
-             PreparedStatement prStmt = con.prepareStatement("select ID, NAME, SURNAME, EMAIL, AGE, a.LOGIN, a.PASSWORD, " +
-                     "a.PROFILE_ENABLE from USERS, AUTHENTICATE a where a.login = ? and a.password = ?")) {
+             PreparedStatement prStmt = con.prepareStatement("select u.ID, NAME, SURNAME, EMAIL, AGE\n" +
+                     "from USERS u, AUTHENTICATE a where u.ID = a.USER_ID and a.login = ? and a.password = ?")) {
             prStmt.setString(1, login);
             prStmt.setString(2, password);
             try (ResultSet rs = prStmt.executeQuery()){
                 if (rs.next()) {
-                    return getResultSetMapper().processResultSet(rs);
+                    user = getById(rs.getLong("id"));
+                    user.setAuthenticate(authenticateDao.getById(user.getId()));
+                    user.setRole(roleDao.getRoleByUserId(user.getId()));
+                    user.setBasket(basketDao.getBasketByUserId(user.getId()));
+                    return user;
                 }
                 throw new ApplicationBaseException("Invalid entity login or password: " + login + " " + password);
             } catch (SQLException e) {
@@ -77,15 +95,8 @@ public class UserDaoImpl extends AbstractCrudDao<User> {
         }
     }
 
-    public Basket getBasketByUserId (long id) {
-        return USERS.values().stream().filter(user -> user.getId()==id)
-                .findFirst()
-                .map(User::getBasket)
-                .orElseThrow(() -> new RuntimeException("Whats wrong with basket"));
-    }
-
     public boolean isLoginExists(String login) {
-        return USERS.values().stream().anyMatch(user -> user.getAuthenticate().getLogin().equals(login));
+        return authenticateDao.isLoginExists(login);
     }
 
     @Override

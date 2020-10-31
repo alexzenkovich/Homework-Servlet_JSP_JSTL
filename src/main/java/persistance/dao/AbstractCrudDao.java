@@ -18,19 +18,12 @@ public abstract class AbstractCrudDao<T> extends AbstractJdbcDao implements Crud
     protected abstract StatementInitializer<T> getStatementInitializer();
 
     @Override
-    public T create(T t) {
+    public void create(T t) {
         try (Connection con = getConnector().getConnection();
              PreparedStatement prStmt = con.prepareStatement(getSqlHolder().createSql(), Statement.RETURN_GENERATED_KEYS)) {
 
             getStatementInitializer().createQueryStatement(prStmt, t);
             prStmt.executeUpdate();
-
-            ResultSet rs = prStmt.getGeneratedKeys();
-            if (rs.next()) {
-                return getById(rs.getLong(1));
-            }
-
-            throw new ApplicationBaseException("Error generation ID for creating entity: " + t);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,14 +55,13 @@ public abstract class AbstractCrudDao<T> extends AbstractJdbcDao implements Crud
 
     @Override
     public List<T> getAll() {
+        List<T> t = new ArrayList<>();
         try (Connection con = getConnector().getConnection();
             PreparedStatement prStmt = con.prepareStatement(getSqlHolder().getAllSql())){
             try (ResultSet rs = prStmt.executeQuery()){
-                List<T> t = new ArrayList<>();
                 while (rs.next()) {
                     t.add(getResultSetMapper().processResultSet(rs));
                 }
-                return t;
             } catch (SQLException e) {
                 e.printStackTrace();
                 throw new ApplicationBaseException("Error process getAll entities method: " + e.getMessage());
@@ -77,8 +69,9 @@ public abstract class AbstractCrudDao<T> extends AbstractJdbcDao implements Crud
 
         }catch (SQLException e) {
             e.printStackTrace();
-            throw new ApplicationBaseException("Error receive database connection: " + e.getMessage());
+//            throw new ApplicationBaseException("Error receive database connection: " + e.getMessage());
         }
+        return t;
     }
 
     @Override

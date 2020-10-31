@@ -34,7 +34,7 @@ public class LoginController extends HttpServlet {
                 throw new RuntimeException("Invalid user password");
             }
             if (!userDao.isLoginExists(login)) {
-                throw new RuntimeException("User already exists");
+                throw new RuntimeException("User still not exists");
             } else {
                 user = userDao.getUserByLoginAndPassword(login, password);
             }
@@ -47,7 +47,7 @@ public class LoginController extends HttpServlet {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        session.setMaxInactiveInterval(600);
+        session.setMaxInactiveInterval(100);
         assert user != null;
         if (user.getRole() == Role.ADMINISTRATOR) {
             request.setAttribute("users", userDao.getAll());

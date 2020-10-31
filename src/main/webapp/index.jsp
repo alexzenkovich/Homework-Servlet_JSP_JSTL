@@ -29,15 +29,46 @@
     </div>
 </header>
 <main>
-    <div id="navigate_map">
-
-    </div>
     <div id="content">
         <c:if test="${requestScope.exists != null}"><h3>${requestScope.exists}</h3></c:if>
         <c:if test="${requestScope.error != null}"><h3>${requestScope.error}</h3></c:if>
         <c:if test="${requestScope.emptyBasket != null}"><h3>${requestScope.emptyBasket}</h3></c:if>
         <c:if test="${requestScope.basketMessage != null}"><h3>${requestScope.basketMessage}</h3></c:if>
-        <c:import url="books.jsp"/>
+<%--        <c:import url="books.jsp"/>--%>
+        <c:choose>
+            <c:when test="${requestScope.books != null}"><c:set var="list" value="${requestScope.books}"/></c:when>
+            <c:when test="${requestScope.booksFromBasket != null}"><c:set var="list" value="${requestScope.booksFromBasket}"/></c:when>
+            <c:when test="${requestScope.bookInfo != null}"><c:set var="bookInfo" value="${requestScope.bookInfo}"/></c:when>
+        </c:choose>
+
+<%--        <h2>${requestScope.bookInfo.author}</h2><br>--%>
+
+
+<%--        <h3>${requestScope.bookInfo.title}</h3>--%>
+
+
+<%--        <ol>--%>
+<%--            <c:forEach var="book" items="${list}">--%>
+<%--                <c:set var="info" value="${book.author} | ${book.title}"/>--%>
+<%--                <li>--%>
+<%--                    <c:out value="Books:"/>--%>
+<%--                    <c:out value="${info}"/>--%>
+<%--                    <c:if test="${sessionScope.user.role == Role.USER && requestScope.books != null}">--%>
+<%--                        <c:url var="put" value="/basket" scope="request">--%>
+<%--                            <c:import scope="request" url="templates/days_for_reading.jsp"/>--%>
+<%--                            <c:param name="action" value="addBook"/>--%>
+<%--                            <c:param name="bookId" value="${book.id}"/>--%>
+<%--                            <c:param name="userId" value="${sessionScope.user.id}"/>--%>
+<%--                        </c:url>--%>
+<%--                    </c:if>--%>
+<%--                    <c:url var="information" value="/book" scope="request">--%>
+<%--                        <c:param name="action" value="info"/>--%>
+<%--                        <c:param name="id" value="${book.id}"/>--%>
+<%--                    </c:url>--%>
+<%--                    <a href="<c:out value="${information}"/>">info</a>--%>
+<%--                </li>--%>
+<%--            </c:forEach>--%>
+<%--        </ol>--%>
     </div>
 </main>
 <footer>

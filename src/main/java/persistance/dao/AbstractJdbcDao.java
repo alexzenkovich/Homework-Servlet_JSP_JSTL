@@ -1,12 +1,13 @@
 package persistance.dao;
 
-import connection.DatabaseConnector;
+import connection.ConnectionFactory;
+import connection.DBConnection;
 
 public abstract class AbstractJdbcDao {
 
-    private static final DatabaseConnector CONNECTOR = DatabaseConnector.getInstance();
+    private static final DBConnection CONNECTOR = ConnectionFactory.getConnectionPool("JDBC");
 
-    public DatabaseConnector getConnector() {
+    public DBConnection getConnector() {
         return CONNECTOR;
     }
 }

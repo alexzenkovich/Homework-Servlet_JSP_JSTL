@@ -3,6 +3,7 @@ package model.users;
 import lombok.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode
 @ToString
@@ -14,9 +15,9 @@ public class Authenticate {
     private String password;
     private boolean profileEnable;
 
-    public Authenticate(String login, String password, boolean profileEnable) {
+    public Authenticate(String login, String password) {
         this.login = login;
         this.password = password;
-        this.profileEnable = profileEnable;
+        this.profileEnable = true;
     }
 }

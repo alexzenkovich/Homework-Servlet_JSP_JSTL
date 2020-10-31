@@ -23,11 +23,11 @@
 <c:out value="Age: ${sessionScope.user.age}"/><br>
 <c:out value="Login: ${sessionScope.user.authenticate.login}"/><br>
 <c:out value="Password: ${sessionScope.user.authenticate.password}"/><br>
-<c:if test="${sessionScope.user.role == Role.USER}">
-    <form method="post" action="templates/edit_profile.jsp">
-        <input type="submit" value="edit profile">
-    </form>
-</c:if>
+<p>
+<form method="post" action="templates/edit_profile.jsp">
+    <input type="submit" value="edit profile">
+</form>
+</p>
 
 
 <c:if test="${sessionScope.user.role == Role.ADMINISTRATOR}">

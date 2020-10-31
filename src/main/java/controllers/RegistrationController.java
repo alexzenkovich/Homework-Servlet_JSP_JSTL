@@ -1,5 +1,6 @@
 package controllers;
 
+import model.basket.Basket;
 import model.users.Authenticate;
 import model.users.Role;
 import model.users.User;
@@ -29,21 +30,17 @@ public class RegistrationController extends HttpServlet {
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
-        User user = new User(name, surname, email, age, new Authenticate(login, password, false),
-                Role.valueOf(role.toUpperCase()));
+        User user = new User(name, surname, email, age);
+        user.setAuthenticate(new Authenticate(login, password));
+        user.setRole(Role.valueOf(role.toUpperCase()));
+        user.setBasket(new Basket());
 
         userDao.create(user);
 
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            session.setMaxInactiveInterval(600);
-            request.setAttribute("books", bookDao.getAll());
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-        } else {
-            request.setAttribute("exists", "login exists");
-            request.setAttribute("books", bookDao.getAll());
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-        }
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+        session.setMaxInactiveInterval(600);
+        request.setAttribute("books", bookDao.getAll());
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

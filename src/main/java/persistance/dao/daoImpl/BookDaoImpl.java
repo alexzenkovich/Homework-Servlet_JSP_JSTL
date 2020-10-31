@@ -25,8 +25,8 @@ public class BookDaoImpl extends AbstractCrudDao<Book> {
     }
 
     @Override
-    public Book create(Book book) {
-        return super.create(book);
+    public void create(Book book) {
+        super.create(book);
     }
 
     @Override
