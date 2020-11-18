@@ -1,8 +1,8 @@
-package by.itacademy.persistance.dao;
+package by.itacademy.persistance.repositories;
 
 import java.util.List;
 
-public interface CrudDao<T>{
+public interface CrudRepository<T>{
 
     void create (T t);
 

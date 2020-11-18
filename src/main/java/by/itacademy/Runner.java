@@ -1,15 +1,15 @@
 package by.itacademy;
 
-import by.itacademy.persistance.dao.daoImpl.BookDaoImpl;
-import by.itacademy.persistance.dao.daoImpl.UserDaoImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.BookRepositoryImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.UserRepositoryImpl;
 
 public class Runner {
 
     public static void main(String[] args) {
 
 
-        UserDaoImpl userDao = new UserDaoImpl();
-        BookDaoImpl bookDao = new BookDaoImpl();
+        UserRepositoryImpl userDao = new UserRepositoryImpl();
+        BookRepositoryImpl bookDao = new BookRepositoryImpl();
 
         System.out.println();
         System.out.println("# getAll Users ");

@@ -1,21 +1,23 @@
-package by.itacademy.persistance.dao.daoImpl;
+package by.itacademy.persistance.repositories.repositoryImpl;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.basket.Basket;
 import by.itacademy.model.basket.BasketCell;
-import by.itacademy.persistance.dao.AbstractJdbcDao;
+import by.itacademy.persistance.repositories.AbstractJdbcRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BasketDaoImpl extends AbstractJdbcDao {
+@Repository
+public class BasketRepositoryImpl extends AbstractJdbcRepository {
 
-    private final BasketCellDaoImpl basketCellDao;
+    private final BasketCellRepositoryImpl basketCellDao;
 
-    public BasketDaoImpl() {
-        basketCellDao = new BasketCellDaoImpl();
+    public BasketRepositoryImpl() {
+        basketCellDao = new BasketCellRepositoryImpl();
     }
 
     public void create(long userId) {

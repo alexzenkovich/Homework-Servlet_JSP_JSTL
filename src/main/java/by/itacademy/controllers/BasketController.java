@@ -4,9 +4,9 @@ import by.itacademy.model.basket.Basket;
 import by.itacademy.model.basket.BasketCell;
 import by.itacademy.model.books.Book;
 import by.itacademy.model.users.User;
-import by.itacademy.persistance.dao.daoImpl.BasketDaoImpl;
-import by.itacademy.persistance.dao.daoImpl.BookDaoImpl;
-import by.itacademy.persistance.dao.daoImpl.UserDaoImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.BasketRepositoryImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.BookRepositoryImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.UserRepositoryImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,9 +20,9 @@ import java.time.LocalDate;
 @WebServlet(name = "BasketController", urlPatterns = "/basket")
 public class BasketController extends HttpServlet {
 
-    private final UserDaoImpl userDao = new UserDaoImpl();
-    private final BookDaoImpl bookDao = new BookDaoImpl();
-    private final BasketDaoImpl basketDao = new BasketDaoImpl();
+    private final UserRepositoryImpl userDao = new UserRepositoryImpl();
+    private final BookRepositoryImpl bookDao = new BookRepositoryImpl();
+    private final BasketRepositoryImpl basketDao = new BasketRepositoryImpl();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

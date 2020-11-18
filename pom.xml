@@ -19,14 +19,29 @@
         <javax.servlet-jsp.version>2.2</javax.servlet-jsp.version>
         <jstl.version>1.2</jstl.version>
 
-        <spring-version>5.2.3.RELEASE</spring-version>
+        <hibernate.version>5.4.1.Final</hibernate.version>
+
+        <spring-webmvc.version>5.2.3.RELEASE</spring-webmvc.version>
+        <spring-data-jpa.version>2.3.5.RELEASE</spring-data-jpa.version>
     </properties>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring-data-jpa.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring-version}</version>
+            <version>${spring-webmvc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -50,13 +65,24 @@
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/c3p0/c3p0 -->
         <dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>
             <version>0.9.1.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-hikaricp</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
 
     </dependencies>
 

@@ -1,9 +1,10 @@
-package by.itacademy.persistance.dao.daoImpl;
+package by.itacademy.persistance.repositories.repositoryImpl;
 
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.basket.BasketCell;
-import by.itacademy.persistance.dao.AbstractJdbcDao;
+import by.itacademy.persistance.repositories.AbstractJdbcRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,12 +13,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasketCellDaoImpl extends AbstractJdbcDao {
+@Repository
+public class BasketCellRepositoryImpl extends AbstractJdbcRepository {
 
-    private final BookDaoImpl bookDao;
+    private final BookRepositoryImpl bookDao;
 
-    public BasketCellDaoImpl() {
-        bookDao = new BookDaoImpl();
+    public BasketCellRepositoryImpl() {
+        bookDao = new BookRepositoryImpl();
     }
 
     public void create(BasketCell basketCell, long basketId) {

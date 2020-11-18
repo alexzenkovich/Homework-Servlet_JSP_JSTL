@@ -1,18 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: aalex
-  Date: 27.09.2020
-  Time: 10:20
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
 <div id="login">
-    <form method="post" action="${pageContext.request.contextPath}/views/templates/login.jsp">
+    <form method="get" action="/login" >
         <input type="submit" value="Login">
     </form>
 </div>

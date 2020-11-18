@@ -1,24 +1,27 @@
-package by.itacademy.persistance.dao.daoImpl;
+package by.itacademy.persistance.repositories.repositoryImpl;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.books.Book;
-import by.itacademy.persistance.dao.AbstractCrudDao;
+import by.itacademy.persistance.repositories.AbstractCrudRepository;
 import by.itacademy.persistance.mapper.ResultSetMapper;
 import by.itacademy.persistance.mapper.impl.BookResultSetMapper;
 import by.itacademy.persistance.query.JdbcSqlQueryHolder;
 import by.itacademy.persistance.query.impl.BookSqlQueryHolder;
 import by.itacademy.persistance.statement.StatementInitializer;
 import by.itacademy.persistance.statement.impl.BookStatementInitializer;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.List;
 
-public class BookDaoImpl extends AbstractCrudDao<Book> {
+@Repository
+public class BookRepositoryImpl extends AbstractCrudRepository<Book> {
 
     private final JdbcSqlQueryHolder bookJdbcSqlQueryHolder;
     private final StatementInitializer<Book> bookStatementInitializer;
     private final ResultSetMapper<Book> bookResultSetMapper;
 
-    public BookDaoImpl () {
+    public BookRepositoryImpl() {
         bookJdbcSqlQueryHolder = new BookSqlQueryHolder();
         bookStatementInitializer = new BookStatementInitializer();
         bookResultSetMapper = new BookResultSetMapper();

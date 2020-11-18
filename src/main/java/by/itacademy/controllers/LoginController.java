@@ -1,58 +1,57 @@
 package by.itacademy.controllers;
 
-import by.itacademy.model.users.Role;
 import by.itacademy.model.users.User;
-import by.itacademy.persistance.dao.daoImpl.BookDaoImpl;
-import by.itacademy.persistance.dao.daoImpl.UserDaoImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.BookRepositoryImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.UserRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import static by.itacademy.constants.ErrorConstants.*;
 
-@WebServlet(urlPatterns = "/login")
-public class LoginController extends HttpServlet {
+@Controller
+public class LoginController{
 
-    private final UserDaoImpl userDao = new UserDaoImpl();
-    private final BookDaoImpl bookDao = new BookDaoImpl();
+    @Autowired
+    private UserRepositoryImpl userDao;
+    @Autowired
+    private BookRepositoryImpl bookDao;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @GetMapping("/login")
+    protected ModelAndView loadLoginPage() {
+        return new ModelAndView("templates/login");
+    }
 
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-
-        User user = null;
-
+    @PostMapping("/login")
+    public ModelAndView processLogin(@RequestParam String login, @RequestParam String password) {
         try {
             if (login == null || login.isEmpty()) {
-                throw new RuntimeException("Invalid user login");
+                throw new RuntimeException(INVALID_USER_LOGIN);
             }
             if (password == null || password.isEmpty()) {
-                throw new RuntimeException("Invalid user password");
+                throw new RuntimeException(INVALID_USER_PASSWORD);
             }
             if (!userDao.isLoginExists(login)) {
-                throw new RuntimeException("User still not exists");
-            } else {
-                user = userDao.getUserByLoginAndPassword(login, password);
+                throw new RuntimeException(USER_NOT_EXISTS);
             }
 
-        } catch (RuntimeException e) {
-            request.setAttribute("error", e.getMessage());
-            response.sendRedirect("/index.jsp");
-            return;
-        }
+            User user = userDao.getUserByLoginAndPassword(login, password);
 
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-        session.setMaxInactiveInterval(100);
-        assert user != null;
-        if (user.getRole() == Role.ADMINISTRATOR) {
-            request.setAttribute("users", userDao.getAll());
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("user", user);
+            modelAndView.setViewName("index");
+
+            return modelAndView;
+
+        } catch (RuntimeException e) {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("error", e.getMessage());
+            modelAndView.setViewName("login");
+            return modelAndView;
         }
-        request.setAttribute("books", bookDao.getAll());
-        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
     }
+
 }

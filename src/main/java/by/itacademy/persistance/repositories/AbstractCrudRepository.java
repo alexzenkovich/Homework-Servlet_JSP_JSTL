@@ -1,4 +1,4 @@
-package by.itacademy.persistance.dao;
+package by.itacademy.persistance.repositories;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.persistance.mapper.ResultSetMapper;
@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractCrudDao<T> extends AbstractJdbcDao implements CrudDao<T> {
+public abstract class AbstractCrudRepository<T> extends AbstractJdbcRepository implements CrudRepository<T> {
 
     protected abstract JdbcSqlQueryHolder getSqlHolder();
 

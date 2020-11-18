@@ -1,6 +1,6 @@
 package by.itacademy.controllers;
 
-import by.itacademy.persistance.dao.daoImpl.BookDaoImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.BookRepositoryImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 
-    private final BookDaoImpl bookDao = new BookDaoImpl();
+    private final BookRepositoryImpl bookDao = new BookRepositoryImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();

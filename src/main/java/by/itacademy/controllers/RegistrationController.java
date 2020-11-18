@@ -4,8 +4,8 @@ import by.itacademy.model.basket.Basket;
 import by.itacademy.model.users.Authenticate;
 import by.itacademy.model.users.Role;
 import by.itacademy.model.users.User;
-import by.itacademy.persistance.dao.daoImpl.BookDaoImpl;
-import by.itacademy.persistance.dao.daoImpl.UserDaoImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.BookRepositoryImpl;
+import by.itacademy.persistance.repositories.repositoryImpl.UserRepositoryImpl;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +17,8 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/registration")
 public class RegistrationController extends HttpServlet {
 
-    private final UserDaoImpl userDao = new UserDaoImpl();
-    private final BookDaoImpl bookDao = new BookDaoImpl();
+    private final UserRepositoryImpl userDao = new UserRepositoryImpl();
+    private final BookRepositoryImpl bookDao = new BookRepositoryImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

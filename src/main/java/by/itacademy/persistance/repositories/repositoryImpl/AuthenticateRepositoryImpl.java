@@ -1,14 +1,15 @@
-package by.itacademy.persistance.dao.daoImpl;
+package by.itacademy.persistance.repositories.repositoryImpl;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.users.Authenticate;
-import by.itacademy.persistance.dao.AbstractCrudDao;
+import by.itacademy.persistance.repositories.AbstractCrudRepository;
 import by.itacademy.persistance.mapper.ResultSetMapper;
 import by.itacademy.persistance.mapper.impl.AuthenticateResultSetMapper;
 import by.itacademy.persistance.query.JdbcSqlQueryHolder;
 import by.itacademy.persistance.query.impl.AuthenticateSqlQueryHolder;
 import by.itacademy.persistance.statement.StatementInitializer;
 import by.itacademy.persistance.statement.impl.AuthenticateStatementInitializer;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +17,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AuthenticateDaoImpl extends AbstractCrudDao<Authenticate> {
+@Repository
+public class AuthenticateRepositoryImpl extends AbstractCrudRepository<Authenticate> {
 
     private final JdbcSqlQueryHolder authJdbcSqlQueryHolder;
     private final StatementInitializer<Authenticate> authStatementInitializer;
     private final ResultSetMapper<Authenticate> authResultSetMapper;
 
-    public AuthenticateDaoImpl() {
+    public AuthenticateRepositoryImpl() {
         authJdbcSqlQueryHolder = new AuthenticateSqlQueryHolder();
         authStatementInitializer = new AuthenticateStatementInitializer();
         authResultSetMapper = new AuthenticateResultSetMapper();

@@ -1,15 +1,17 @@
-package by.itacademy.persistance.dao.daoImpl;
+package by.itacademy.persistance.repositories.repositoryImpl;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.users.Role;
-import by.itacademy.persistance.dao.AbstractJdbcDao;
+import by.itacademy.persistance.repositories.AbstractJdbcRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RoleDaoImpl extends AbstractJdbcDao {
+@Repository
+public class RoleRepositoryImpl extends AbstractJdbcRepository {
 
 
     public void create(long userId, Role role) {

@@ -1,12 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List" %>
 <%@ page import="by.itacademy.model.users.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 
 <head>
     <meta charset="UTF-8" lang="ru">
-    <link href="/WEB-INF/views/projectStyle.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/WEB-INF/views/projectStyle.css" rel="stylesheet">
     <title>Home page</title>
 </head>
 
@@ -29,8 +28,8 @@
 </header>
 <main>
     <div id="content">
-        <c:if test="${requestScope.exists != null}"><h3>${requestScope.exists}</h3></c:if>
-        <c:if test="${requestScope.error != null}"><h3>${requestScope.error}</h3></c:if>
+        <c:if test="${exists != null}"><h3>${exists}</h3></c:if>
+        <c:if test="${error != null}"><h3>${error}</h3></c:if>
         <c:if test="${requestScope.emptyBasket != null}"><h3>${requestScope.emptyBasket}</h3></c:if>
         <c:if test="${requestScope.basketMessage != null}"><h3>${requestScope.basketMessage}</h3></c:if>
 <%--        <c:import url="books.jsp"/>--%>
