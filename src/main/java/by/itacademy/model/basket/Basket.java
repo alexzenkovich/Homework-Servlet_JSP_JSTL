@@ -1,26 +1,37 @@
 package by.itacademy.model.basket;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.util.List;
+import by.itacademy.model.users.User;
+import lombok.*;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
+@EqualsAndHashCode(exclude = {"user"})
+@ToString(exclude = {"user"})
 
+@Entity
+@Table
 public class Basket {
 
+    @Id
+    @GeneratedValue
     private long id;
-    private List<BasketCell> basketcells;
 
-    public List<BasketCell> getBasketcells() {
-        return basketcells;
+    @OneToMany(mappedBy = "basket", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BasketCell> basketcells = new HashSet<>();
+
+    @OneToOne
+    private User user;
+
+    public void addBasketCell(BasketCell basketCell) {
+        this.basketcells.add(basketCell);
+        basketCell.setBasket(this);
     }
 
-    public void setBasketcells(List<BasketCell> basketcells) {
-        this.basketcells = basketcells;
+    public void removeBasketCell(BasketCell basketCell) {
+        this.basketcells.remove(basketCell);
+        basketCell.setBasket(null);
     }
 }
