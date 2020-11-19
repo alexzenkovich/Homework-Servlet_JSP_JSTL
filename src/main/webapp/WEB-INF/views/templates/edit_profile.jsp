@@ -1,18 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: aalex
-  Date: 27.09.2020
-  Time: 20:33
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Edit profile</title>
 </head>
 <body>
 <div id="action_form">
-    <form method="post" action="${pageContext.request.contextPath}/change">
+    <form method="post" action="<c:url value="/update">">
         <p>
             Name: <input type="text" name="name" /> <br>
         </p>

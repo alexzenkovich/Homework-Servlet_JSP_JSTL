@@ -12,7 +12,7 @@
 </head>
 <body>
     <div id="logout">
-        <form method="post" action="${pageContext.request.contextPath}/logout">
+        <form method="post" action="/logout">
             <input type="submit" value="Log out">
         </form>
     </div>

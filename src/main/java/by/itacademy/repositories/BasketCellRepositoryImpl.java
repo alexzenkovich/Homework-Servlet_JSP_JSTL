@@ -1,17 +1,16 @@
-package by.itacademy.persistance.repositories.repositoryImpl;
+package by.itacademy.repositories;
 
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.basket.BasketCell;
-import by.itacademy.persistance.repositories.AbstractJdbcRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Repository
 public class BasketCellRepositoryImpl extends AbstractJdbcRepository {
@@ -67,9 +66,9 @@ public class BasketCellRepositoryImpl extends AbstractJdbcRepository {
         return basketCell;
     }
 
-    public List<BasketCell> getBasketCellsByBasketId (long basketId) {
+    public Set<BasketCell> getBasketCellsByBasketId (long basketId) {
 
-        List<BasketCell> basketCells = new ArrayList<>();
+        Set<BasketCell> basketCells = new HashSet<>();
         BasketCell basketCell = null;
 
         try (Connection con = getConnector().getConnection();

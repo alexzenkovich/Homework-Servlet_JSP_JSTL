@@ -1,8 +1,7 @@
-package by.itacademy.persistance.repositories.repositoryImpl;
+package by.itacademy.repositories;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.users.Authenticate;
-import by.itacademy.persistance.repositories.AbstractCrudRepository;
 import by.itacademy.persistance.mapper.ResultSetMapper;
 import by.itacademy.persistance.mapper.impl.AuthenticateResultSetMapper;
 import by.itacademy.persistance.query.JdbcSqlQueryHolder;

@@ -39,7 +39,7 @@
             ${user.age} | ${user.authenticate.login} | ${user.authenticate.password} | ${user.role}"/>
             <li><c:out value="${userInfo}"/><br>
                 <c:if test="${user.role != Role.ADMINISTRATOR}">
-                    <c:url var="update" value="/change?action=update" scope="request">
+                    <c:url var="update" value="/change">
                         <c:param name="userId" value="${user.id}"/>
                         <c:param name="adminId" value="${sessionScope.user.id}"/>
                     </c:url>

@@ -1,9 +1,8 @@
-package by.itacademy.persistance.repositories.repositoryImpl;
+package by.itacademy.repositories;
 
 import by.itacademy.exception.ApplicationBaseException;
 import by.itacademy.model.basket.Basket;
 import by.itacademy.model.basket.BasketCell;
-import by.itacademy.persistance.repositories.AbstractJdbcRepository;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;

@@ -2,19 +2,63 @@ package by.itacademy.controllers;
 
 import by.itacademy.model.users.Role;
 import by.itacademy.model.users.User;
-import by.itacademy.persistance.repositories.repositoryImpl.UserRepositoryImpl;
-
+import by.itacademy.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import static by.itacademy.constants.ErrorConstants.*;
+@Controller
+public class ChangeController {
 
-@WebServlet(name = "ChangeController", urlPatterns = "/change")
-public class ChangeController extends HttpServlet {
+    @Autowired
+    private UserService userService;
 
-    private final UserRepositoryImpl userDao = new UserRepositoryImpl();
+    @GetMapping("/update")
+    protected ModelAndView loadEditProfilePage() {
+        ModelAndView modelAndView = new ModelAndView("templates/edit_profile");
+        User user = new User();
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @PostMapping("/update")
+    public ModelAndView processEditProfilePage(@ModelAttribute User user) {
+
+        try {
+            checkUserForm(user);
+
+        } catch () {
+
+        }
+    }
+
+    static void checkUserForm(@ModelAttribute User user) {
+        if (user.getName() == null || user.getName().isEmpty()) {
+            throw new RuntimeException(INVALID_USER_NAME);
+        }
+        if (user.getSurname() == null || user.getSurname().isEmpty()) {
+            throw new RuntimeException(INVALID_USER_SURNAME);
+        }
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+            throw new RuntimeException(INVALID_USER_EMAIL);
+        }
+        if (user.getAge() == 0 || String.valueOf(user.getAge()).isEmpty()) {
+            throw new RuntimeException(INVALID_USER_AGE);
+        }
+        if (user.getAuthenticate().getLogin() == null || user.getAuthenticate().getLogin().isEmpty()) {
+            throw new RuntimeException(INVALID_USER_LOGIN);
+        }
+        if (user.getAuthenticate().getPassword() == null || user.getAuthenticate().getPassword().isEmpty()) {
+            throw new RuntimeException(INVALID_USER_PASSWORD);
+        }
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
@@ -46,7 +90,7 @@ public class ChangeController extends HttpServlet {
         }
         userDao.update(user);
         
-        getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/user.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -63,7 +107,7 @@ public class ChangeController extends HttpServlet {
                 if (admin.getRole() == Role.ADMINISTRATOR) {
                     request.setAttribute("users", userDao.getAll());
                 }
-                getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/user.jsp").forward(request, response);
                 return;
             }
             if (request.getParameter("action").equals("delete")) {
@@ -71,7 +115,7 @@ public class ChangeController extends HttpServlet {
                 if (admin.getRole() == Role.ADMINISTRATOR) {
                     request.setAttribute("users", userDao.getAll());
                 }
-                getServletContext().getRequestDispatcher("/main.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/user.jsp").forward(request, response);
             }
         } catch (RuntimeException e) {
             request.getSession().setAttribute("error", e.getMessage());

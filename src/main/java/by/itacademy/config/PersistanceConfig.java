@@ -20,8 +20,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan("by.itacademy.persistance.repositories")
-@EnableTransactionManagement(proxyTargetClass = true)
+@ComponentScan("by.itacademy")
+@EnableTransactionManagement
 public class PersistanceConfig {
 
     @Autowired
@@ -31,7 +31,7 @@ public class PersistanceConfig {
     public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         localContainerEntityManagerFactoryBean.setDataSource(dataSource());
-        localContainerEntityManagerFactoryBean.setPackagesToScan("by.it_academy.app.model");
+        localContainerEntityManagerFactoryBean.setPackagesToScan("by.itacademy.app.model");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         localContainerEntityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);

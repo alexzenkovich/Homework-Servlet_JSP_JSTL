@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="registration">
-    <form method="post" action="${pageContext.request.contextPath}/views/templates/registration.jsp">
+    <form method="post" action="/registration">
         <input type="submit" value="Registration">
     </form>
 </div>

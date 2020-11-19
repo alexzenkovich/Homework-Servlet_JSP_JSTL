@@ -1,0 +1,54 @@
+CREATE TABLE AUTHENTICATE
+(
+    ID                INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    LOGIN             VARCHAR(50)                        NOT NULL,
+    PASSWORD          VARCHAR(50)                        NOT NULL,
+    PROFILE_ENABLE    VARCHAR(50)
+);
+
+
+CREATE TABLE USERS
+(
+    ID       INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    NAME     VARCHAR(50)                        NOT NULL,
+    SURNAME  VARCHAR(50)                        NOT NULL,
+    EMAIL    VARCHAR(50)                        NOT NULL,
+    AGE      INTEGER                            NOT NULL,
+    AUTHENTICATE_ID INTEGER                     NOT NULL,
+    BASKET_ID INTEGER                           NOT NULL
+);
+
+CREATE TABLE ROLES
+(
+    ID      INTEGER AUTO_INCREMENT NOT NULL,
+    ROLE    VARCHAR(50)            NOT NULL
+);
+
+CREATE TABLE USERS_ROLES
+(
+    ID      INTEGER AUTO_INCREMENT NOT NULL,
+    USER_ID INTEGER                NOT NULL,
+    ROLE_ID VARCHAR(50)            NOT NULL
+);
+CREATE TABLE BOOKS
+(
+    ID            INTEGER AUTO_INCREMENT NOT NULL,
+    AUTHOR        VARCHAR (50)           NOT NULL,
+    TITLE         VARCHAR (50)           NOT NULL,
+    PAGES         INTEGER                NOT NULL,
+    ACCESS        VARCHAR (10)           NOT NULL
+);
+CREATE TABLE BASKETS
+(
+    ID      INTEGER AUTO_INCREMENT NOT NULL,
+    USER_ID INTEGER NOT NULL
+);
+
+CREATE TABLE BASKETCELLS
+(
+    ID      INTEGER AUTO_INCREMENT NOT NULL,
+    BOOK_ID INTEGER NOT NULL,
+    DAYS_FOR_READING INTEGER NOT NULL,
+    DATE_OF_TAKING_BOOK DATE NOT NULL,
+    BASKET_ID INT NOT NULL
+);

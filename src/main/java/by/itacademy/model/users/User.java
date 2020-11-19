@@ -12,6 +12,10 @@ import javax.persistence.*;
 
 @Entity
 @Table
+@NamedQueries({
+        @NamedQuery(name = "getUserByLoginAndPassword", query = "select u from User u left join fetch Authenticate a " +
+                "where u.id = a.user.id and a.login = :login and a.password = :password")
+})
 public class User {
     @Id
     @GeneratedValue
@@ -22,13 +26,15 @@ public class User {
     private String email;
     private int age;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "authenticate_id", referencedColumnName = "id")
     private Authenticate authenticate;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
     public User(String name, String surname, String email, int age) {
