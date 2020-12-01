@@ -1,60 +1,126 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="by.itacademy.model.users.Role" %>
-<%@ page import="by.itacademy.model.users.User" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="by.it_academy.model.users.Role" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 
 <html>
 <head>
-    <title>${sessionScope.user.role}</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/projectStyle.css">
+    <title>${user.role}</title>
 </head>
 <body>
-
-<c:choose>
-    <c:when test="${sessionScope.user.role == Role.USER}"><c:out value="User data:"/></c:when>
-    <c:when test="${sessionScope.user.role == Role.ADMINISTRATOR}"><c:out value="Admin data:"/></c:when>
-</c:choose><br><br>
-
-<c:out value="Id: ${sessionScope.user.id}"/><br>
-<c:out value="Name: ${sessionScope.user.name}"/><br>
-<c:out value="Surname: ${sessionScope.user.surname}"/><br>
-<c:out value="Email: ${sessionScope.user.email}"/><br>
-<c:out value="Age: ${sessionScope.user.age}"/><br>
-<c:out value="Login: ${sessionScope.user.authenticate.login}"/><br>
-<c:out value="Password: ${sessionScope.user.authenticate.password}"/><br>
-<p>
-<form method="post" action="templates/edit_profile.jsp">
-    <input type="submit" value="edit profile">
-</form>
-</p>
-
-
-<c:if test="${sessionScope.user.role == Role.ADMINISTRATOR}">
-    <br>
-    <c:out value="Users list:"/><br>
-    <ul>
-        <c:forEach var="user" items="${requestScope.users}">
-            <c:set var="userInfo" value="${user.id} | ${user.name} | ${user.surname} | ${user.email} |
-            ${user.age} | ${user.authenticate.login} | ${user.authenticate.password} | ${user.role}"/>
-            <li><c:out value="${userInfo}"/><br>
-                <c:if test="${user.role != Role.ADMINISTRATOR}">
-                    <c:url var="update" value="/change">
-                        <c:param name="userId" value="${user.id}"/>
-                        <c:param name="adminId" value="${sessionScope.user.id}"/>
-                    </c:url>
-                    <c:url var="delete" value="/change?action=delete" scope="request">
-                        <c:param name="userId" value="${user.id}"/>
-                        <c:param name="adminId" value="${sessionScope.user.id}"/>
-                    </c:url>
-                    <a href="<c:out value="${update}"/>">change user to admin</a>
-                    <a href="<c:out value="${delete}"/>">delete</a>
-                </c:if>
-            </li>
-            <br>
-        </c:forEach>
-    </ul>
-</c:if>
+    <header>
+        <h1>Online-library</h1>
+        <div id="authenticate">
+            <table>
+                <tr>
+                    <td><c:import url="templates/buttons/basket_button.jsp"/></td>
+                    <td><c:import url="templates/buttons/logout_button.jsp"/></td>
+<%--                    <td><c:import url="templates/edit_profile.jsp"/></td>--%>
+                </tr>
+            </table>
+        </div>
+    </header>
+    <main>
+        <div id="error">
+            <c:if test="${error != null}"><h3>${error}</h3></c:if>
+            <c:if test="${basketMessage != null}"><h3>${basketMessage}</h3></c:if>
+        </div>
+        <div id="user_data">
+            <table>
+                <tr>
+                    <th><h2>${user.role} data:</h2></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>${user.name}</td>
+                </tr>
+                <tr>
+                    <td>Surname:</td>
+                    <td>${user.surname}</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>${user.email}</td>
+                </tr>
+                <tr>
+                    <td>Age:</td>
+                    <td>${user.age}</td>
+                </tr>
+                <tr>
+                    <td>Login:</td>
+                    <td> ${user.authenticate.login}</td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td>${user.authenticate.password}</td>
+                </tr>
+                <tr>
+                    <td>Access:</td>
+                    <td><c:choose>
+                        <c:when test="${user.authenticate.profileEnable == true}">open</c:when>
+                        <c:otherwise>blocked</c:otherwise>
+                    </c:choose></td>
+                </tr>
+            </table>
+        </div>
+        <p>
+            <c:import url="templates/edit_profile.jsp"/>
+        </p>
+        <div id="divUserTable">
+            <c:if test="${user.role == Role.ADMINISTRATOR}">
+                <br>
+                <h2>Users list:</h2>
+                <table class="tableUsers">
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Login</th>
+                        <th>Password</th>
+                        <th>Access</th>
+                    </tr>
+                    <c:forEach var="u" items="${users}">
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${u.name}</td>
+                            <td>${u.surname}</td>
+                            <td>${u.email}</td>
+                            <td>${u.age}</td>
+                            <td>${u.authenticate.login}</td>
+                            <td>${u.authenticate.password}</td>
+                            <td>${u.authenticate.profileEnable}</td>
+                            <td>
+                                <c:if test="${u.authenticate.profileEnable == true}">
+                                    <form method="post" action="<c:url value="/user/blocking"/>">
+                                        <input type="hidden" name="userId" value="${u.id}">
+                                        <input type="submit" value="block user"/>
+                                    </form>
+                                </c:if>
+                                <c:if test="${u.authenticate.profileEnable == false}">
+                                    <form method="post" action="<c:url value="/user/unblocking"/>">
+                                        <input type="hidden" name="userId" value="${u.id}">
+                                        <input type="submit" value="unblock user"/>
+                                    </form>
+                                </c:if>
+                            </td>
+                            <td>
+                                <form method="post" action="<c:url value="/user/deleteUser"/>">
+                                    <input type="hidden" name="userId" value="${u.id}">
+                                    <input type="submit" value="delete user"/>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:if>
+        </div>
+    </main>
+<footer>
+    <c:import url="templates/buttons/to_home_button.jsp"/>
+</footer>
 
 </body>
 </html>

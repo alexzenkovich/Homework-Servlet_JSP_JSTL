@@ -1,0 +1,76 @@
+html,
+body {
+    height: 100%;
+}
+header{
+    height: 10%;
+    border-bottom: 1px;
+    background: antiquewhite;
+}
+main {
+    height: 75%;
+}
+footer {
+    background: azure;
+    height: 5%;
+}
+#error{
+    height: 10%;
+    align-content: center;
+    text-decoration-color: crimson;
+}
+#header h1 {
+    left: 20px;
+}
+#authenticate {
+    position: absolute;
+    width: 500px;
+    height: 50px;
+    right: 30px;
+    top: 30px;
+}
+#divTableBooks, #divUserTable, #divTableBooksInBasket {
+    width: 100%;
+}
+.tableBooks, .tableUsers, .tableBooksInBasket {
+    width: 100%;
+}
+.tableBooks thead tr, .tableUsers thead tr, .tableBooksInBasket thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.tableBooks th, .tableBooks td, .tableUsers th, .tableUsers td,
+.tableBooksInBasket th, .tableBooksInBasket td {
+    padding: 12px 15px;
+}
+.tableBooks tbody tr, .tableUsers tbody tr, .tableBooksInBasket tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.tableBooks tbody tr.active-row,
+.tableUsers tbody tr.active-row,
+.tableBooksInBasket tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.tableBooks tbody tr:nth-of-type(even),
+.tableUsers tbody tr:nth-of-type(even),
+.tableBooksInBasket tbody tr:nth-of-type(even){
+    background-color: #f3f3f3;
+}
+
+.tableBooks tbody tr:last-of-type, .tableUsers tbody tr:last-of-type, .tableBooksInBasket tbody tr:last-of-type{
+    border-bottom: 2px solid #009879;
+}
+.div_login_form, .div_reg_form {
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+.reg_form, .login_form {
+    table-layout: fixed;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+}

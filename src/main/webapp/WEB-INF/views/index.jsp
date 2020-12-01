@@ -1,11 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="by.itacademy.model.users.Role" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
+<%@ page import="by.it_academy.model.users.Role" %>
 <html>
 
 <head>
-    <meta charset="UTF-8" lang="ru">
-    <link href="${pageContext.request.contextPath}/WEB-INF/views/projectStyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/projectStyle.css">
     <title>Home page</title>
 </head>
 
@@ -14,63 +13,80 @@
     <h1>Online-library</h1>
     <div id="authenticate">
         <c:choose>
-            <c:when test="${sessionScope.user.role == Role.USER || sessionScope.user.role == Role.ADMINISTRATOR}">
-                <c:import url="/WEB-INF/views/templates/buttons/profile_button.jsp"/>
-                <c:import url="/WEB-INF/views/templates/buttons/basket_button.jsp"/>
-                <c:import url="/WEB-INF/views/templates/buttons/logout.jsp"/>
+            <c:when test="${user.role == Role.USER || user.role == Role.ADMINISTRATOR}">
+                <table>
+                    <tr>
+                        <td><c:import url="/WEB-INF/views/templates/buttons/profile_button.jsp"/></td>
+                        <td><c:import url="/WEB-INF/views/templates/buttons/basket_button.jsp"/></td>
+                        <td><c:import url="/WEB-INF/views/templates/buttons/logout_button.jsp"/></td>
+                    </tr>
+                </table>
             </c:when>
             <c:otherwise>
-                <c:import url="/WEB-INF/views/templates/buttons/login_button.jsp"/>
-                <c:import url="/WEB-INF/views/templates/buttons/registration_button.jsp"/>
+                <table>
+                    <tr>
+                        <td><c:import url="/WEB-INF/views/templates/buttons/login_button.jsp"/></td>
+                        <td><c:import url="/WEB-INF/views/templates/buttons/registration_button.jsp"/></td>
+                    </tr>
+                </table>
             </c:otherwise>
         </c:choose>
     </div>
 </header>
 <main>
-    <div id="content">
-        <c:if test="${exists != null}"><h3>${exists}</h3></c:if>
+    <div id="error">
         <c:if test="${error != null}"><h3>${error}</h3></c:if>
-        <c:if test="${requestScope.emptyBasket != null}"><h3>${requestScope.emptyBasket}</h3></c:if>
-        <c:if test="${requestScope.basketMessage != null}"><h3>${requestScope.basketMessage}</h3></c:if>
-<%--        <c:import url="books.jsp"/>--%>
-        <c:choose>
-            <c:when test="${requestScope.books != null}"><c:set var="list" value="${requestScope.books}"/></c:when>
-            <c:when test="${requestScope.booksFromBasket != null}"><c:set var="list" value="${requestScope.booksFromBasket}"/></c:when>
-            <c:when test="${requestScope.bookInfo != null}"><c:set var="bookInfo" value="${requestScope.bookInfo}"/></c:when>
-        </c:choose>
-
-<%--        <h2>${requestScope.bookInfo.author}</h2><br>--%>
-
-
-<%--        <h3>${requestScope.bookInfo.title}</h3>--%>
-
-
-<%--        <ol>--%>
-<%--            <c:forEach var="book" items="${list}">--%>
-<%--                <c:set var="info" value="${book.author} | ${book.title}"/>--%>
-<%--                <li>--%>
-<%--                    <c:out value="Books:"/>--%>
-<%--                    <c:out value="${info}"/>--%>
-<%--                    <c:if test="${sessionScope.user.role == Role.USER && requestScope.books != null}">--%>
-<%--                        <c:url var="put" value="/basket" scope="request">--%>
-<%--                            <c:import scope="request" url="templates/days_for_reading.jsp"/>--%>
-<%--                            <c:param name="action" value="addBook"/>--%>
-<%--                            <c:param name="bookId" value="${book.id}"/>--%>
-<%--                            <c:param name="userId" value="${sessionScope.user.id}"/>--%>
-<%--                        </c:url>--%>
-<%--                    </c:if>--%>
-<%--                    <c:url var="information" value="/book" scope="request">--%>
-<%--                        <c:param name="action" value="info"/>--%>
-<%--                        <c:param name="id" value="${book.id}"/>--%>
-<%--                    </c:url>--%>
-<%--                    <a href="<c:out value="${information}"/>">info</a>--%>
-<%--                </li>--%>
-<%--            </c:forEach>--%>
-<%--        </ol>--%>
+    </div>
+    <div id="divTableBooks">
+        <table class="tableBooks">
+            <thead>
+            <tr>
+                <th scope="col" id="colId">No.</th>
+                <th scope="col" id="colAuthor">Author</th>
+                <th scope="col" id="colTitle">Title</th>
+                <th scope="col" id="colPages">Numbers of pages</th>
+                <c:if test="${user.authenticate.profileEnable == true && (user.role == Role.ADMINISTRATOR || user.role == Role.USER)}">
+                    <th scope="col" id="colAddToBasket"></th>
+                    <th scope="col" id="colBookInfo"></th>
+                </c:if>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="book" items="${books}">
+                <tr>
+                    <td>${book.id}</td>
+                    <td>${book.author}</td>
+                    <td>${book.title}</td>
+                    <td>${book.numberOfPages}</td>
+                    <c:if test="${user.authenticate.profileEnable == true && (user.role == Role.ADMINISTRATOR || user.role == Role.USER)}">
+                        <td>
+                            <form method="post" action="<c:url value="/addToBasket"/>">
+                                <label>
+                                    <input width="20" type="number" min="1" name="daysForReading"/>
+                                </label>
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <input type="hidden" name="bookId" value="${book.id}">
+                                <input type="submit" value="add book"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="<c:url value="/getBookInfo"/>">
+                                <input type="hidden" name="userId" value="${user.id}">
+                                <input type="hidden" name="bookId" value="${book.id}">
+                                <input type="submit" value="about book"/>
+                            </form>
+                        </td>
+                    </c:if>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
     </div>
 </main>
+
+
 <footer>
-    <h3>FOOTER</h3>
+    <h2 align="center">Your advertisement could be here</h2>
 </footer>
 
 </body>
