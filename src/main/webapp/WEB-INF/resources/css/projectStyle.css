@@ -29,37 +29,31 @@ footer {
     right: 30px;
     top: 30px;
 }
-#divTableBooks, #divUserTable, #divTableBooksInBasket {
+#divMainTable, #divUserPage, #divBasketPage {
     width: 100%;
 }
-.tableBooks, .tableUsers, .tableBooksInBasket {
+.mainTable {
     width: 100%;
 }
-.tableBooks thead tr, .tableUsers thead tr, .tableBooksInBasket thead tr {
+.mainTable thead tr {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
 }
-.tableBooks th, .tableBooks td, .tableUsers th, .tableUsers td,
-.tableBooksInBasket th, .tableBooksInBasket td {
+.mainTable th, .mainTable td {
     padding: 12px 15px;
 }
-.tableBooks tbody tr, .tableUsers tbody tr, .tableBooksInBasket tbody tr {
+.mainTable tbody tr {
     border-bottom: 1px solid #dddddd;
 }
-.tableBooks tbody tr.active-row,
-.tableUsers tbody tr.active-row,
-.tableBooksInBasket tbody tr.active-row {
+.mainTable tbody tr.active-row {
     font-weight: bold;
     color: #009879;
 }
-.tableBooks tbody tr:nth-of-type(even),
-.tableUsers tbody tr:nth-of-type(even),
-.tableBooksInBasket tbody tr:nth-of-type(even){
+.mainTable tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
-
-.tableBooks tbody tr:last-of-type, .tableUsers tbody tr:last-of-type, .tableBooksInBasket tbody tr:last-of-type{
+.mainTable tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
 }
 .div_login_form, .div_reg_form {

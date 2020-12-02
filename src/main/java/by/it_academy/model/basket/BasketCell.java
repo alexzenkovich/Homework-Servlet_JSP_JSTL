@@ -1,10 +1,7 @@
 package by.it_academy.model.basket;
 
 import by.it_academy.model.books.Book;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,6 +21,7 @@ public class BasketCell {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date dateOfTakingBook;
+
     private int daysForReading;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.MERGE})

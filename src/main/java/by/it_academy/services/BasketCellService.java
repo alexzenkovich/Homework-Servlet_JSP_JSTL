@@ -17,35 +17,8 @@ public class BasketCellService {
     @Autowired
     private BasketCellRepository basketCellRepository;
 
-    public BasketCell createBasketCell(BasketCell basketCell) {
-        return basketCellRepository.save(basketCell);
-    }
-
-    public BasketCell findBasketCellByBasket_IdAndBook_Id(Long basketId, Long bookId) {
-        return basketCellRepository.findBasketCellByBasket_IdAndBook_Id(basketId, bookId);
-    }
-
     public BasketCell findBasketCellById(Long id) {
         return basketCellRepository.findBasketCellById(id);
     }
 
-    public List<BasketCell> findAllBasketsCellsByBasket_Id(Long id) {
-        return basketCellRepository.findBasketCellsByBasket_Id(id);
-    }
-
-    public Integer countBasketCellsByBasket_Id(Long id) {
-        return basketCellRepository.countBasketCellsByBasket_Id(id);
-    }
-
-    public int countBookByUserId(Long id) {
-        return basketCellRepository.countBasketCellsByUserId(id);
-    }
-
-    public List<BasketCell> findAllBasketsCellsWithBookByBasketId(Long id) {
-        return basketCellRepository.findBasketCellsWithBookByBasketId(id);
-    }
-
-    public void delete(BasketCell basketCell) {
-        basketCellRepository.delete(basketCell);
-    }
 }

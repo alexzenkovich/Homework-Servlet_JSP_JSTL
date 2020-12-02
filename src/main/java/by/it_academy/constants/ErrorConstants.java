@@ -10,4 +10,5 @@ public interface ErrorConstants {
     String USER_NOT_EXISTS = "User still not exists";
     String INVALID_USER_REGISTRATION_DATA = "User already was registrated";
     String YOUR_BASKET_IS_EMPTY = "Your basket is empty";
+    String INVALID_FIELD_DATA = "Please, choose amount of days";
 }

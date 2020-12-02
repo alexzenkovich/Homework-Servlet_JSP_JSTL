@@ -6,7 +6,6 @@ import by.it_academy.model.books.Book;
 import by.it_academy.model.users.Authenticate;
 import by.it_academy.model.users.Role;
 import by.it_academy.model.users.User;
-import by.it_academy.repositories.BasketCellRepository;
 import by.it_academy.repositories.BookRepository;
 import by.it_academy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,5 +114,11 @@ public class UserService {
         BasketCell basketCell = basketCellService.findBasketCellById(basketCellId);
         user.getBasket().removeBasketCell(basketCell);
         userRepository.saveAndFlush(user);
+    }
+
+    public List<BasketCell> findUserWithBasketCellsWithBooksById(long id) {
+        List<BasketCell> basketCells = userRepository.findUserWithBasketCellsWithBooksById(id)
+                .getBasket().getBasketCells();
+        return basketCells;
     }
 }

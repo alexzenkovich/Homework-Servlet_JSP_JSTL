@@ -17,22 +17,24 @@
     <div id="error">
         <c:if test="${error != null}"><h3>${error}</h3></c:if>
     </div>
-    <div id="divTableBooksInBasket">
+    <div id="divBasketPage">
         <h2>Books in your basket:</h2>
-        <table class="tableBooksInBasket">
-            <tr>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Date of taking</th>
-                <th>Days for reading</th>
-                <th></th>
-            </tr>
+        <table class="mainTable">
+            <thead>
+                <tr>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Date of taking</th>
+                    <th>Days for reading</th>
+                    <th></th>
+                </tr>
+            </thead>
             <c:forEach var="basketCell" items="${booksInBasket}">
                 <tr>
                     <td>${basketCell.book.author}</td>
                     <td>${basketCell.book.title}</td>
                     <td>${basketCell.dateOfTakingBook}</td>
-                    <td >${basketCell.daysForReading}</td>
+                    <td>${basketCell.daysForReading}</td>
                     <td>
                         <form method="post" action="<c:url value="/deleteFromBasket"/>">
                             <input type="hidden" name="userId" value="${user.id}">
@@ -48,8 +50,6 @@
 <footer>
     <c:import url="templates/buttons/to_home_button.jsp"/>
 </footer>
-
-
 
 
 </body>

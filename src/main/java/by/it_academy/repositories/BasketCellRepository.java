@@ -11,7 +11,7 @@ import java.util.List;
 public interface BasketCellRepository extends JpaRepository<BasketCell, Long> {
 
     BasketCell findBasketCellById(Long id);
-    List<BasketCell> findBasketCellsByBasket_Id(Long id);
+
     Integer countBasketCellsByBasket_Id(Long id);
 
     @Query("select count(id) from BasketCell where basket.user.id = ?1")
@@ -21,5 +21,4 @@ public interface BasketCellRepository extends JpaRepository<BasketCell, Long> {
     @Query("from BasketCell where basket.id = ?1")
     List<BasketCell> findBasketCellsWithBookByBasketId(long id);
 
-    BasketCell findBasketCellByBasket_IdAndBook_Id(Long basketId, Long bookId);
 }

@@ -30,12 +30,6 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book findBookWithBasketCellsById(Long id) { return bookRepository.findBookWithBasketCellsById(id); }
-
-    public void createBook(Book book) {
-        bookRepository.save(book);
-    }
-
     public Book findBookById(Long bookId) {
         return bookRepository.findBookById(bookId);
     }

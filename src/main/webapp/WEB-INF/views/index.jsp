@@ -14,7 +14,7 @@
     <div id="authenticate">
         <c:choose>
             <c:when test="${user.role == Role.USER || user.role == Role.ADMINISTRATOR}">
-                <table>
+                <table class="user_buttons">
                     <tr>
                         <td><c:import url="/WEB-INF/views/templates/buttons/profile_button.jsp"/></td>
                         <td><c:import url="/WEB-INF/views/templates/buttons/basket_button.jsp"/></td>
@@ -37,8 +37,8 @@
     <div id="error">
         <c:if test="${error != null}"><h3>${error}</h3></c:if>
     </div>
-    <div id="divTableBooks">
-        <table class="tableBooks">
+    <div id="divMainTable">
+        <table class="mainTable">
             <thead>
             <tr>
                 <th scope="col" id="colId">No.</th>

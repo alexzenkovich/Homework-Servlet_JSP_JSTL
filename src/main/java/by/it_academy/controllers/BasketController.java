@@ -1,16 +1,13 @@
 package by.it_academy.controllers;
 
-import by.it_academy.model.basket.Basket;
+import by.it_academy.exception.ApplicationBaseException;
 import by.it_academy.model.basket.BasketCell;
 import by.it_academy.model.users.User;
 import by.it_academy.services.BasketCellService;
-import by.it_academy.services.BasketService;
 import by.it_academy.services.BookService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,13 +25,11 @@ public class BasketController {
     @Autowired
     private BookService bookService;
 
-    @Autowired
-    private BasketCellService basketCellService;
-
     @PostMapping("/basket")
     public ModelAndView processBasketPage(@SessionAttribute("user") User user) {
         try {
-            List<BasketCell> basketCells = basketCellService.findAllBasketsCellsWithBookByBasketId(user.getId());
+
+            List<BasketCell> basketCells = userService.findUserWithBasketCellsWithBooksById(user.getId());
             if (basketCells.size() == 0) {
                 throw new RuntimeException(YOUR_BASKET_IS_EMPTY);
             }
@@ -54,10 +49,12 @@ public class BasketController {
 
     @PostMapping("/addToBasket")
     public ModelAndView addBookToBasket(@SessionAttribute("user") User user,
-                                        @Validated @RequestParam int daysForReading,
+                                        @RequestParam int daysForReading,
                                         @RequestParam long bookId) {
         try {
-
+            if (daysForReading == 0) {
+                throw new ApplicationBaseException(INVALID_FIELD_DATA);
+            }
             userService.addBookToUser(user.getId(), bookId, daysForReading);
 
             ModelAndView modelAndView = new ModelAndView();

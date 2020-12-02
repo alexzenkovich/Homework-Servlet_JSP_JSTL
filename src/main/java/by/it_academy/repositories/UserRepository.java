@@ -1,5 +1,6 @@
 package by.it_academy.repositories;
 
+import by.it_academy.model.basket.BasketCell;
 import by.it_academy.model.users.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +36,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u.basket.basketCells.size from User u where u.id = ?1")
     int getSizeUserBasketCellsById(long id);
+
+    @EntityGraph(attributePaths = {"basket.basketCells", "basket.basketCells.book"})
+    @Query("from User u where u.id = ?1")
+    User findUserWithBasketCellsWithBooksById(long id);
+
 }

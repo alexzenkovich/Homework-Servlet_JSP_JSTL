@@ -15,7 +15,7 @@
                 <tr>
                     <td><c:import url="templates/buttons/basket_button.jsp"/></td>
                     <td><c:import url="templates/buttons/logout_button.jsp"/></td>
-<%--                    <td><c:import url="templates/edit_profile.jsp"/></td>--%>
+                    <td><c:import url="templates/edit_profile.jsp"/></td>
                 </tr>
             </table>
         </div>
@@ -65,13 +65,13 @@
             </table>
         </div>
         <p>
-            <c:import url="templates/edit_profile.jsp"/>
         </p>
-        <div id="divUserTable">
+        <div id="divUserPage">
             <c:if test="${user.role == Role.ADMINISTRATOR}">
                 <br>
                 <h2>Users list:</h2>
-                <table class="tableUsers">
+                <table class="mainTable">
+                    <thead>
                     <tr>
                         <th>No.</th>
                         <th>Name</th>
@@ -81,7 +81,10 @@
                         <th>Login</th>
                         <th>Password</th>
                         <th>Access</th>
+                        <th></th>
+                        <th></th>
                     </tr>
+                    </thead>
                     <c:forEach var="u" items="${users}">
                         <tr>
                             <td>${u.id}</td>

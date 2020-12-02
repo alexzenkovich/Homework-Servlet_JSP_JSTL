@@ -1,12 +1,9 @@
 package by.it_academy.controllers;
 
 import by.it_academy.exception.ApplicationBaseException;
-import by.it_academy.model.basket.Basket;
 import by.it_academy.model.users.Authenticate;
-import by.it_academy.model.users.Role;
 import by.it_academy.model.users.User;
 import by.it_academy.services.BasketCellService;
-import by.it_academy.services.BasketService;
 import by.it_academy.services.BookService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
