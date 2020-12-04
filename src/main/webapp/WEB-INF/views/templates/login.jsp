@@ -27,15 +27,14 @@
                     <td><input type="password" name="password" placeholder="Enter password"></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" value="Login"></td>
+                    <td><input type="submit" value="Log in"></td>
                 </tr>
             </table>
-
         </form>
     </div>
 </main>
 <footer>
-
+    <a href="<c:url value="/index"/>">Home page</a>
 </footer>
 
 </body>

@@ -1,16 +1,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sev" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/projectStyle.css">
-    <title>${user.name}`s basket</title>
+    <title><sec:authentication property="principal.name"/>`s basket</title>
 </head>
 <body>
 <header>
     <h1>Online-library</h1>
     <div id="authenticate">
-        <c:import url="/WEB-INF/views/templates/buttons/profile_button.jsp"/>
-        <c:import url="/WEB-INF/views/templates/buttons/logout_button.jsp"/>
+        <table class="user_buttons">
+            <tr>
+                <sec:authorize access="hasAuthority('ADMINISTRATOR')">
+                    <td><c:import url="templates/buttons/books_button.jsp"/></td>
+                </sec:authorize>
+                <td><c:import url="templates/buttons/profile_button.jsp"/></td>
+                <td><c:import url="templates/buttons/logout_button.jsp"/></td>
+            </tr>
+        </table>
     </div>
 </header>
 <main>
@@ -37,7 +46,7 @@
                     <td>${basketCell.daysForReading}</td>
                     <td>
                         <form method="post" action="<c:url value="/deleteFromBasket"/>">
-                            <input type="hidden" name="userId" value="${user.id}">
+                            <input type="hidden" name="userId" value="<sec:authentication property="principal.id"/>">
                             <input type="hidden" name="basketCellId" value="${basketCell.id}">
                             <input type="submit" value="delete"/>
                         </form>

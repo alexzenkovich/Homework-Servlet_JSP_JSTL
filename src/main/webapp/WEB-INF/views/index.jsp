@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
-<%@ page import="by.it_academy.model.users.Role" %>
 <html>
 
 <head>
@@ -12,43 +12,54 @@
 <header>
     <h1>Online-library</h1>
     <div id="authenticate">
-        <c:choose>
-            <c:when test="${user.role == Role.USER || user.role == Role.ADMINISTRATOR}">
-                <table class="user_buttons">
-                    <tr>
-                        <td><c:import url="/WEB-INF/views/templates/buttons/profile_button.jsp"/></td>
-                        <td><c:import url="/WEB-INF/views/templates/buttons/basket_button.jsp"/></td>
-                        <td><c:import url="/WEB-INF/views/templates/buttons/logout_button.jsp"/></td>
-                    </tr>
-                </table>
-            </c:when>
-            <c:otherwise>
-                <table>
-                    <tr>
-                        <td><c:import url="/WEB-INF/views/templates/buttons/login_button.jsp"/></td>
-                        <td><c:import url="/WEB-INF/views/templates/buttons/registration_button.jsp"/></td>
-                    </tr>
-                </table>
-            </c:otherwise>
-        </c:choose>
+        <sec:authorize access="isAuthenticated()">
+            <table class="user_buttons">
+                <tr>
+                    <sec:authorize access="hasAuthority('ADMINISTRATOR')">
+                        <td><c:import url="templates/buttons/books_button.jsp"/></td>
+                    </sec:authorize>
+                    <td><c:import url="templates/buttons/basket_button.jsp"/></td>
+                    <td><c:import url="templates/buttons/profile_button.jsp"/></td>
+                    <td><c:import url="templates/buttons/logout_button.jsp"/></td>
+                </tr>
+            </table>
+        </sec:authorize>
+
+        <sec:authorize access="!isAuthenticated()">
+            <table>
+                <tr>
+                    <td><c:import url="templates/buttons/login_button.jsp"/></td>
+                    <td><c:import url="templates/buttons/registration_button.jsp"/></td>
+                </tr>
+            </table>
+        </sec:authorize>
     </div>
 </header>
 <main>
     <div id="error">
-        <c:if test="${error != null}"><h3>${error}</h3></c:if>
+        <table>
+            <tr>
+                <td></td>
+                <td>
+                    <c:if test="${error != null}"><h3>${error}</h3></c:if>
+                    <c:if test="${basketMessage != null}">${basketMessage}</c:if>
+                </td>
+                <td></td>
+            </tr>
+        </table>
     </div>
     <div id="divMainTable">
         <table class="mainTable">
             <thead>
             <tr>
-                <th scope="col" id="colId">No.</th>
-                <th scope="col" id="colAuthor">Author</th>
-                <th scope="col" id="colTitle">Title</th>
-                <th scope="col" id="colPages">Numbers of pages</th>
-                <c:if test="${user.authenticate.profileEnable == true && (user.role == Role.ADMINISTRATOR || user.role == Role.USER)}">
-                    <th scope="col" id="colAddToBasket"></th>
-                    <th scope="col" id="colBookInfo"></th>
-                </c:if>
+                <th>No.</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Numbers of pages</th>
+                <sec:authorize access="isAuthenticated()">
+                    <th></th>
+                    <th></th>
+                </sec:authorize>
             </tr>
             </thead>
             <tbody>
@@ -58,7 +69,7 @@
                     <td>${book.author}</td>
                     <td>${book.title}</td>
                     <td>${book.numberOfPages}</td>
-                    <c:if test="${user.authenticate.profileEnable == true && (user.role == Role.ADMINISTRATOR || user.role == Role.USER)}">
+                    <sec:authorize access="isAuthenticated()">
                         <td>
                             <form method="post" action="<c:url value="/addToBasket"/>">
                                 <label>
@@ -76,7 +87,7 @@
                                 <input type="submit" value="about book"/>
                             </form>
                         </td>
-                    </c:if>
+                    </sec:authorize>
                 </tr>
             </c:forEach>
             </tbody>

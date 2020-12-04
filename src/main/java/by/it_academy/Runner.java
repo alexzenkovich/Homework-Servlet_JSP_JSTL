@@ -6,6 +6,11 @@ import by.it_academy.services.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.servlet.http.Cookie;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 public class Runner {
 
     private static final ApplicationContext CONTEXT = new AnnotationConfigApplicationContext("by.it_academy");
@@ -23,5 +28,6 @@ public class Runner {
         userService.addBookToUser(userId, bookId, daysForReading);
 
         System.out.println(userService.countUserBasketBasketCellsById(userId));
+
     }
 }

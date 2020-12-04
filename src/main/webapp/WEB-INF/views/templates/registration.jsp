@@ -3,7 +3,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/projectStyle.css">
-    <title>Authentication</title>
+    <title>Registration</title>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                     <td>Age:</td>
-                    <td><input type="text" name="age" placeholder="Enter your age"/></td>
+                    <td><input type="number" name="age" placeholder="Enter your age"/></td>
                 </tr>
                 <tr>
                     <td>Login:</td>
@@ -49,7 +49,7 @@
     </div>
 </main>
 <footer>
-
+    <a href="<c:url value="/index"/>">Home page</a>
 </footer>
 </body>
 </html>

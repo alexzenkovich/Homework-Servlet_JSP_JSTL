@@ -1,11 +1,15 @@
 package by.it_academy.controllers;
 
 import by.it_academy.exception.ApplicationBaseException;
+import by.it_academy.model.users.Authenticate;
 import by.it_academy.model.users.Role;
 import by.it_academy.model.users.User;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import static by.it_academy.constants.ErrorConstants.*;
@@ -17,10 +21,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/update")
+    public ModelAndView loadEditProfilePage() {
+        ModelAndView modelAndView = new ModelAndView("templates/edit_profile");
+        modelAndView.addObject("user", new User());
+        modelAndView.addObject("authenticate", new Authenticate());
+        return modelAndView;
+    }
+
     @PostMapping("/update")
-    public ModelAndView processEditProfilePage(@SessionAttribute("user") User user) {
+    public ModelAndView processEditProfilePage(@AuthenticationPrincipal User oldUser,
+                                               @Validated(value = User.class)
+                                               @ModelAttribute("user") User user,
+                                               @ModelAttribute("authenticate") Authenticate authenticate) {
 
         try {
+            ModelAndView modelAndView = new ModelAndView();
+
             if (user.getName() == null || user.getName().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_NAME);
             }
@@ -40,7 +57,10 @@ public class UserController {
                 throw new ApplicationBaseException(INVALID_USER_PASSWORD);
             }
             User changedUser = userService.update(user);
-            ModelAndView modelAndView = new ModelAndView();
+
+            if (changedUser == null) {
+                throw new ApplicationBaseException(INVALID_UPDATE_USER);
+            }
             modelAndView.addObject("user", changedUser);
             modelAndView.setViewName("user");
 
@@ -49,78 +69,73 @@ public class UserController {
             }
 
             return modelAndView;
-        } catch (RuntimeException e) {
-            ModelAndView modelAndView = new ModelAndView();
+        } catch (Exception e) {
+            ModelAndView modelAndView = new ModelAndView("error");
             modelAndView.addObject("error", e.getMessage());
-            modelAndView.setViewName("templates/edit_profile");
-
             return modelAndView;
         }
     }
 
-    @PostMapping("/profile")
-    public ModelAndView loadUserProfilePage(@SessionAttribute("user") User user) {
-        ModelAndView modelAndView = new ModelAndView("user");
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
-        if (user.getRole() == Role.ADMINISTRATOR) {
-            modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
+    @GetMapping("/profile")
+    public ModelAndView loadUserProfilePage(@AuthenticationPrincipal User user) {
+        try {
+            ModelAndView modelAndView = new ModelAndView("user");
+            modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
+            if (user.getRole() == Role.ADMINISTRATOR) {
+                modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
+            }
+            return modelAndView;
+        } catch (Exception e) {
+            ModelAndView modelAndView = new ModelAndView("error");
+            modelAndView.addObject("error", e.getMessage());
+            return modelAndView;
         }
-        return modelAndView;
     }
 
     @PostMapping("/blocking")
-    public ModelAndView processBlockingUser(@SessionAttribute("user") User user,
+    public ModelAndView processBlockingUser(@AuthenticationPrincipal User user,
             @RequestParam Long userId) {
         try {
-            ModelAndView modelAndView = new ModelAndView();
             userService.disableUserProfile(userId);
-
-            modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
-            modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
-            modelAndView.setViewName("user");
-            return modelAndView;
-        } catch (RuntimeException e) {
             ModelAndView modelAndView = new ModelAndView("user");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
+            return modelAndView;
+        } catch (ApplicationBaseException e) {
+            ModelAndView modelAndView = new ModelAndView("error");
+            modelAndView.addObject("error", e.getMessage());
             return modelAndView;
         }
     }
 
     @PostMapping("/unblocking")
-    public ModelAndView processUnblockingUser(@SessionAttribute("user") User user,
+    public ModelAndView processUnblockingUser(@AuthenticationPrincipal User user,
                                             @RequestParam Long userId) {
         try {
-            ModelAndView modelAndView = new ModelAndView();
             userService.enableUserProfile(userId);
-            modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
-            modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
-            modelAndView.setViewName("user");
-            return modelAndView;
-        } catch (RuntimeException e) {
             ModelAndView modelAndView = new ModelAndView("user");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
+            return modelAndView;
+        } catch (ApplicationBaseException e) {
+            ModelAndView modelAndView = new ModelAndView("error");
+            modelAndView.addObject("error", e.getMessage());
             return modelAndView;
         }
     }
 
     @PostMapping("/deleteUser")
-    public ModelAndView processDeletingUser(@SessionAttribute("user") User user, @RequestParam Long userId) {
+    public ModelAndView processDeletingUser(@AuthenticationPrincipal User user, @RequestParam Long userId) {
         try{
             userService.deleteUserById(userId);
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
-            modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
-            return modelAndView;
-        } catch (RuntimeException e) {
             ModelAndView modelAndView = new ModelAndView("user");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
+        } catch (Exception e) {
+            ModelAndView modelAndView = new ModelAndView("error");
+            modelAndView.addObject("error", e.getMessage());
+            return modelAndView;
         }
     }
-
-
 }

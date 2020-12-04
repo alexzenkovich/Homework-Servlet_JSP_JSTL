@@ -23,7 +23,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired(required = false)
+    @Autowired
     private BookRepository bookRepository;
 
     @Autowired
@@ -41,9 +41,9 @@ public class UserService {
         admin1.setRole(Role.ADMINISTRATOR);
         admin2.setRole(Role.ADMINISTRATOR);
         user.setRole(Role.USER);
-        admin1.setBasket(new Basket());
-        admin2.setBasket(new Basket());
-        user.setBasket(new Basket());
+        admin1.addBasket(new Basket());
+        admin2.addBasket(new Basket());
+        user.addBasket(new Basket());
         userRepository.save(admin1);
         userRepository.save(admin2);
         userRepository.save(user);
@@ -51,6 +51,10 @@ public class UserService {
 
     public boolean existsUserByAuthenticateLogin(String login) {
         return userRepository.existsUserByAuthenticateLogin(login);
+    }
+
+    public User findUserByAuthenticateLogin(String login) {
+        return userRepository.findUserByAuthenticateLogin(login);
     }
 
     public User findUserWithAuthenticateByLoginAndPassword(String login, String password) {
@@ -65,11 +69,22 @@ public class UserService {
         return userRepository.findUserWithBasketById(id);
     }
 
-    public User create(User user) {
-        user.setBasket(new Basket());
+    public boolean create(User user, Authenticate authenticate) {
+        User userFromDB = userRepository.findUserByAuthenticateLogin(authenticate.getLogin());
+
+        if (userFromDB != null) {
+            return false;
+        }
+
         user.setRole(Role.USER);
-        User createdUser = userRepository.save(user);
-        return findUserWithBasketById(createdUser.getId());
+        authenticate.setProfileEnable(true);
+        user.addAuthenticate(authenticate);
+        user.addBasket(new Basket());
+        if(user.getRole() == null) {
+            user.setRole(Role.USER);
+        }
+        userRepository.save(user);
+        return true;
     }
 
     public User update(User user) {
@@ -117,8 +132,8 @@ public class UserService {
     }
 
     public List<BasketCell> findUserWithBasketCellsWithBooksById(long id) {
-        List<BasketCell> basketCells = userRepository.findUserWithBasketCellsWithBooksById(id)
+        return userRepository.findUserWithBasketCellsWithBooksById(id)
                 .getBasket().getBasketCells();
-        return basketCells;
     }
+
 }

@@ -9,11 +9,11 @@
 <header>
     <h1>Online-library</h1>
     <div id="authenticate">
-        <table>
+        <table class="user_buttons">
             <tr>
-                <td><c:import url="/WEB-INF/views/templates/buttons/profile_button.jsp"/></td>
-                <td><c:import url="/WEB-INF/views/templates/buttons/basket_button.jsp"/></td>
-                <td><c:import url="/WEB-INF/views/templates/buttons/logout_button.jsp"/></td>
+                <td><c:import url="templates/buttons/basket_button.jsp"/></td>
+                <td><c:import url="templates/buttons/profile_button.jsp"/></td>
+                <td><c:import url="templates/buttons/logout_button.jsp"/></td>
             </tr>
         </table>
     </div>

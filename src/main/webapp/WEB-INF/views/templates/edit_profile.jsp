@@ -15,7 +15,7 @@
         <p>Name: <input type="text" name="name" placeholder="Enter your name"/> <br></p>
         <p>Surname: <input type="text" name="surname" placeholder="Enter your surname"/> <br></p>
         <p>Email: <input type="text" name="email" placeholder="Enter your email"/> <br></p>
-        <p>Age: <input type="text" name="age" placeholder="Enter your age"/> <br></p>
+        <p>Age: <input type="number" name="age" placeholder="Enter your age"/> <br></p>
         <p>Login: <input type="text" name="login" placeholder="Enter your login"/> <br></p>
         <p>Password: <input type="password" name="password" placeholder="Enter your password"/> <br></p>
 

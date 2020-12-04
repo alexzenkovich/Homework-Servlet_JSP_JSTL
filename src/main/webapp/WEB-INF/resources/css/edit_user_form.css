@@ -29,8 +29,8 @@
 /* Поля ввода полной ширины */
 .form-container input[type=text], .form-container input[type=password] {
     width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
+    padding: 5px;
+    margin: 5px 0 12px 0;
     border: none;
     background: #f1f1f1;
 }

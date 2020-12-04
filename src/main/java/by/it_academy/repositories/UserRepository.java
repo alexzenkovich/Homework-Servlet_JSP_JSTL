@@ -11,6 +11,9 @@ import java.util.List;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    @EntityGraph(attributePaths = {"authenticate", "basket"})
+    User findUserByAuthenticateLogin(String username);
+
     boolean existsUserByAuthenticateLogin(String login);
 
     @Query("select u from User u join fetch u.authenticate a where a.login = ?1 and a.password = ?2")

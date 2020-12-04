@@ -17,14 +17,17 @@ footer {
 #error{
     height: 10%;
     align-content: center;
-    text-decoration-color: crimson;
+
+}
+#error table {
+    width: 100%;
 }
 #header h1 {
     left: 20px;
 }
 #authenticate {
     position: absolute;
-    width: 500px;
+    width: 400px;
     height: 50px;
     right: 30px;
     top: 30px;

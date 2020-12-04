@@ -11,4 +11,8 @@ public interface ErrorConstants {
     String INVALID_USER_REGISTRATION_DATA = "User already was registrated";
     String YOUR_BASKET_IS_EMPTY = "Your basket is empty";
     String INVALID_FIELD_DATA = "Please, choose amount of days";
+    String INVALID_BOOK_AUTHOR = "Invalid author`s data";
+    String INVALID_BOOK_TITLE = "Invalid title`s data";
+    String INVALID_BOOK_NUMBER_OF_PAGES = "Invalid number of page";
+    String INVALID_UPDATE_USER = "Invalid process user updating";
 }
