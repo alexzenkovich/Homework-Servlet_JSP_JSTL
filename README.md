@@ -1,1 +1,1 @@
-Web project impl Servlet + JSP + JSTL
+This project describes the work of the online-library. It has simple form of front-end part. Such technologies as Spring MVC, Spring Data, Spring Security, Lombok, JSP were used by me here. Database is H2 database.
