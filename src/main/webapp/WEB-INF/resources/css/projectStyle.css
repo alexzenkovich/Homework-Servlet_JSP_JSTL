@@ -1,0 +1,73 @@
+html,
+body {
+    height: 100%;
+}
+header{
+    height: 10%;
+    border-bottom: 1px;
+    background: antiquewhite;
+}
+main {
+    height: 75%;
+}
+footer {
+    background: azure;
+    height: 5%;
+}
+#error{
+    height: 10%;
+    align-content: center;
+
+}
+#error table {
+    width: 100%;
+}
+#header h1 {
+    left: 20px;
+}
+#authenticate {
+    position: absolute;
+    width: 400px;
+    height: 50px;
+    right: 30px;
+    top: 30px;
+}
+#divMainTable, #divUserPage, #divBasketPage {
+    width: 100%;
+}
+.mainTable {
+    width: 100%;
+}
+.mainTable thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.mainTable th, .mainTable td {
+    padding: 12px 15px;
+}
+.mainTable tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+.mainTable tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.mainTable tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.mainTable tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.div_login_form, .div_reg_form {
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+.reg_form, .login_form {
+    table-layout: fixed;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
