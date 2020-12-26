@@ -1,7 +1,9 @@
 package by.it_academy.controllers;
 
 import by.it_academy.exception.ApplicationBaseException;
+import by.it_academy.model.basket.Basket;
 import by.it_academy.model.users.Authenticate;
+import by.it_academy.model.users.Role;
 import by.it_academy.model.users.User;
 import by.it_academy.services.BookService;
 import by.it_academy.services.UserSecurityService;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collections;
 
 import static by.it_academy.constants.ErrorConstants.*;
 
@@ -40,11 +44,6 @@ public class RegistrationController{
                                             @ModelAttribute("authenticate") Authenticate authenticate) {
         try {
             ModelAndView modelAndView = new ModelAndView();
-
-//            if (bindingResult.hasErrors()) {
-//                modelAndView.setViewName("registration");
-//                return modelAndView;
-//            }
             if (user.getName() == null || user.getName().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_NAME);
             }
@@ -67,13 +66,17 @@ public class RegistrationController{
                 throw new ApplicationBaseException(INVALID_USER_REGISTRATION_DATA);
             }
 
-            if(!userService.create(user, authenticate)) {
-                modelAndView.addObject("error", INVALID_USER_REGISTRATION_DATA);
+            User userFromDB = userService.findUserByAuthenticateLogin(authenticate.getLogin());
+            if(userFromDB != null) {
+                modelAndView.addObject("error", USER_ALREADY_EXISTS);
                 modelAndView.setViewName("templates/registration");
                 return modelAndView;
             }
 
-            user = userService.findUserByAuthenticateLogin(authenticate.getLogin());
+            user.setAuthenticate(authenticate);
+            user.setBasket(new Basket());
+            user.setRoles(Collections.singleton(Role.USER));
+            userService.create(user);
             modelAndView.addObject("books", bookService.findAllBooks());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");

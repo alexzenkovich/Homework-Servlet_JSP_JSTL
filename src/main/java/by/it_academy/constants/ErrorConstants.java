@@ -9,6 +9,7 @@ public interface ErrorConstants {
     String INVALID_USER_PASSWORD = "Invalid user password";
     String USER_NOT_EXISTS = "User still not exists";
     String INVALID_USER_REGISTRATION_DATA = "User already was registrated";
+    String USER_ALREADY_EXISTS = "User already exists";
     String YOUR_BASKET_IS_EMPTY = "Your basket is empty";
     String INVALID_FIELD_DATA = "Please, choose amount of days";
     String INVALID_BOOK_AUTHOR = "Invalid author`s data";
