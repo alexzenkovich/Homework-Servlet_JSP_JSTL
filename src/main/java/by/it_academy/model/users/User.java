@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
@@ -31,14 +29,12 @@ public class User implements UserDetails {
     private int age;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "authenticate_id", referencedColumnName = "id")
     private Authenticate authenticate;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
     public User(String name, String surname, String email, int age) {

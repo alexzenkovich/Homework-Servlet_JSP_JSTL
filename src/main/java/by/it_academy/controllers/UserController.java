@@ -124,10 +124,10 @@ public class UserController {
         }
     }
 
-    @PostMapping("/deleteUser")
-    public ModelAndView processDeletingUser(@AuthenticationPrincipal User user, @RequestParam Long userId) {
+    @PostMapping("/delete/{id}")
+    public ModelAndView processDeletingUser(@AuthenticationPrincipal User user, @PathVariable Long id) {
         try{
-            userService.deleteUserById(userId);
+            userService.deleteUserById(id);
             ModelAndView modelAndView = new ModelAndView("user");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));

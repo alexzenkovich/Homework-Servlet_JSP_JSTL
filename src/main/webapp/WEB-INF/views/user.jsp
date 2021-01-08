@@ -122,8 +122,7 @@
                                     </c:if>
                                 </td>
                                 <td>
-                                    <form method="post" action="<c:url value="/user/deleteUser"/>">
-                                        <input type="hidden" name="userId" value="${u.id}">
+                                    <form method="post" action="<c:url value="/user/delete/${u.id}"/>">
                                         <input type="submit" value="delete user"/>
                                     </form>
                                 </td>

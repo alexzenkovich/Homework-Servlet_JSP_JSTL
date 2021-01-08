@@ -57,14 +57,6 @@ public class UserService {
         return userRepository.findUserByAuthenticateLogin(login);
     }
 
-    public User findUserWithAuthenticateByLoginAndPassword(String login, String password) {
-        return userRepository.findUserWithAuthenticateByLoginAndPassword(login, password);
-    }
-
-    public User findUserWithAuthenticateAndBasketById(long id) {
-        return userRepository.findUserWithAuthenticateAndBasketById(id);
-    }
-
     public User findUserWithBasketById(Long id) {
         return userRepository.findUserWithBasketById(id);
     }
@@ -75,14 +67,10 @@ public class UserService {
         if (userFromDB != null) {
             return false;
         }
-
         user.setRole(Role.USER);
         authenticate.setProfileEnable(true);
         user.addAuthenticate(authenticate);
         user.addBasket(new Basket());
-        if(user.getRole() == null) {
-            user.setRole(Role.USER);
-        }
         userRepository.save(user);
         return true;
     }
