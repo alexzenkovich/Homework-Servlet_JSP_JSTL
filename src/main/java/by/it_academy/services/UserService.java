@@ -57,20 +57,22 @@ public class UserService {
         return userRepository.findUserByAuthenticateLogin(login);
     }
 
-    public User findUserWithAuthenticateByLoginAndPassword(String login, String password) {
-        return userRepository.findUserWithAuthenticateByLoginAndPassword(login, password);
-    }
-
-    public User findUserWithAuthenticateAndBasketById(long id) {
-        return userRepository.findUserWithAuthenticateAndBasketById(id);
-    }
-
     public User findUserWithBasketById(Long id) {
         return userRepository.findUserWithBasketById(id);
     }
 
-    public User create(User user) {
-        return userRepository.save(user);
+    public boolean create(User user, Authenticate authenticate) {
+        User userFromDB = userRepository.findUserByAuthenticateLogin(authenticate.getLogin());
+
+        if (userFromDB != null) {
+            return false;
+        }
+        user.setRole(Role.USER);
+        authenticate.setProfileEnable(true);
+        user.addAuthenticate(authenticate);
+        user.addBasket(new Basket());
+        userRepository.save(user);
+        return true;
     }
 
     public User update(User user) {

@@ -8,8 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Collection;
 
 @NoArgsConstructor
 @Data
@@ -29,7 +29,6 @@ public class User implements UserDetails {
     private int age;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "authenticate_id", referencedColumnName = "id")
     private Authenticate authenticate;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -38,7 +37,6 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
     public User(String name, String surname, String email, int age) {

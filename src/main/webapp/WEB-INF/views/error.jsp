@@ -18,7 +18,7 @@
 </main>
 
 <footer>
-    <c:import url="templates/buttons/to_home_button.jsp"/>
+    <a href="<c:url value="/index"/>">Home page</a>
 </footer>
 </body>
 </html>

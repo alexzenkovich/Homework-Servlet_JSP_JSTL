@@ -9,6 +9,7 @@ import by.it_academy.services.BookService;
 import by.it_academy.services.UserSecurityService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,7 @@ public class RegistrationController{
     @PostMapping("/registration")
     public ModelAndView processRegistration(@Validated(value = User.class)
                                             @ModelAttribute("user") User user,
+                                            @Validated(value = Authenticate.class)
                                             @ModelAttribute("authenticate") Authenticate authenticate) {
         try {
             ModelAndView modelAndView = new ModelAndView();
@@ -73,11 +75,10 @@ public class RegistrationController{
                 return modelAndView;
             }
 
-            user.setAuthenticate(authenticate);
-            user.setBasket(new Basket());
-            user.setRoles(Collections.singleton(Role.USER));
-            userService.create(user);
-            modelAndView.addObject("books", bookService.findAllBooks());
+            user = userService.findUserByAuthenticateLogin(authenticate.getLogin());
+//            UserDetails createdUser = userSecurityService.loadUserByUsername(user.getUsername());
+
+=======     modelAndView.addObject("books", bookService.findAllBooks());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");
 
