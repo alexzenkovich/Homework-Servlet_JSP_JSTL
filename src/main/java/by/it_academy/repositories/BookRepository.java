@@ -13,7 +13,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Book findBookById(Long id);
 
-
     @Query("select b from Book b left join fetch b.basketCells where b.id = ?1")
     Book findBookWithBasketCellsById(Long id);
 }

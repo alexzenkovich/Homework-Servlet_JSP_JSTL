@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 
@@ -13,7 +14,10 @@
 </header>
 <main>
     <div id="error">
-        <c:if test="${error != null}">${error}</c:if>
+        <c:if test="${param.error != null}">${error}</c:if>
+    </div>
+    <div>
+        <sec:authentication property="name"/>
     </div>
     <div class="div_login_form">
         <form method="post" action="<c:url value="/login"/> ">

@@ -1,6 +1,5 @@
 package by.it_academy.controllers;
 
-import by.it_academy.exception.ApplicationBaseException;
 import by.it_academy.model.basket.BasketCell;
 import by.it_academy.model.users.User;
 import by.it_academy.services.BookService;
@@ -10,10 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.security.Principal;
 import java.util.List;
-
 import static by.it_academy.constants.Constants.*;
 import static by.it_academy.constants.ErrorConstants.*;
 

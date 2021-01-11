@@ -30,13 +30,13 @@
         <h2>Books in your basket:</h2>
         <table class="mainTable">
             <thead>
-                <tr>
-                    <th>Author</th>
-                    <th>Title</th>
-                    <th>Date of taking</th>
-                    <th>Days for reading</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date of taking</th>
+                <th>Days for reading</th>
+                <th></th>
+            </tr>
             </thead>
             <c:forEach var="basketCell" items="${booksInBasket}">
                 <tr>
