@@ -19,27 +19,27 @@
             <table class="reg_form">
                 <tr>
                     <td>Name:</td>
-                    <td><input type="text" name="name" placeholder="Enter your name"/></td>
+                    <td><input type="text" name="name" placeholder="Enter your name" required/></td>
                 </tr>
                 <tr>
                     <td>Surname:</td>
-                    <td><input type="text" name="surname" placeholder="Enter your surname"/></td>
+                    <td><input type="text" name="surname" placeholder="Enter your surname" required/></td>
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type="text" name="email" placeholder="Enter your email"/></td>
+                    <td><input type="email" name="email" placeholder="Enter your email" required/></td>
                 </tr>
                 <tr>
                     <td>Age:</td>
-                    <td><input type="number" name="age" placeholder="Enter your age"/></td>
+                    <td><input type="number" name="age" placeholder="Enter your age" required/></td>
                 </tr>
                 <tr>
                     <td>Login:</td>
-                    <td><input type="text" name="login" placeholder="Enter your login"/></td>
+                    <td><input type="text" name="login" placeholder="Enter your login" required/></td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td><input type="password" name="password" placeholder="Enter your password"/></td>
+                    <td><input type="password" name="password" placeholder="Enter your password" required/></td>
                 </tr>
                 <tr>
                     <td><input type="submit" value="Registration"></td>

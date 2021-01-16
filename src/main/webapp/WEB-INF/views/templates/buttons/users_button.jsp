@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="users_button">
-    <form method="get" action="<c:url value="/user/users"/>">
+    <form method="get" action="<c:url value="/users"/>">
         <input type="submit" value="users">
     </form>
 </div>

@@ -75,7 +75,8 @@ public class BasketController {
 
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("basketMessage", BOOK_WAS_DELETED_FROM_BASKET);
-            modelAndView.addObject("booksInBasket",
+            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("basket");
             return modelAndView;

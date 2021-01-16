@@ -14,10 +14,19 @@
 </header>
 <main>
     <div id="error">
-        <c:if test="${param.error != null}">${error}</c:if>
-    </div>
-    <div>
-        <sec:authentication property="name"/>
+        <c:if test="${param.error != null }">${error}</c:if>
+        <c:if test="${param.error}">
+            <p>You was blocked. You can send a message to administrator.</p>
+            <form method="post" action="<c:url value="/login/sendMessage"/> ">
+                <label>Here add your message:</label>
+                <label>
+                    <input type="text" name="message" placeholder="Place for text">
+                </label>
+                <label>
+                    <input type="submit" value="Send message">
+                </label>
+            </form>
+        </c:if>
     </div>
     <div class="div_login_form">
         <form method="post" action="<c:url value="/login"/> ">

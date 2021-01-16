@@ -8,6 +8,19 @@
 <body>
 <header>
     <h1>Online-library</h1>
+    <div id="authenticate">
+        <table class="user_buttons">
+            <tr>
+                <sec:authorize access="hasAuthority('ADMINISTRATOR')">
+                    <td><c:import url="templates/buttons/books_button.jsp"/></td>
+                    <td><c:import url="templates/buttons/users_button.jsp"/></td>
+                </sec:authorize>
+                <td><c:import url="templates/buttons/basket_button.jsp"/></td>
+                <td><c:import url="templates/buttons/profile_button.jsp"/></td>
+                <td><c:import url="templates/buttons/logout_button.jsp"/></td>
+            </tr>
+        </table>
+    </div>
 </header>
 <main>
 

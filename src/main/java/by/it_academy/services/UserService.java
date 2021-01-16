@@ -1,5 +1,6 @@
 package by.it_academy.services;
 
+import by.it_academy.exception.ApplicationBaseException;
 import by.it_academy.model.basket.Basket;
 import by.it_academy.model.basket.BasketCell;
 import by.it_academy.model.books.Book;
@@ -9,21 +10,14 @@ import by.it_academy.model.users.User;
 import by.it_academy.repositories.BookRepository;
 import by.it_academy.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static by.it_academy.constants.ErrorConstants.*;
 
 @Service
 @Transactional
@@ -64,14 +58,6 @@ public class UserService {
 
     public User findUserByAuthenticateLogin(String login) {
         return userRepository.findUserByAuthenticateLogin(login);
-    }
-
-    public User findUserWithAuthenticateByLoginAndPassword(String login, String password) {
-        return userRepository.findUserWithAuthenticateByLoginAndPassword(login, password);
-    }
-
-    public User findUserWithAuthenticateAndBasketById(long id) {
-        return userRepository.findUserWithAuthenticateAndBasketById(id);
     }
 
     public User findUserWithBasketById(Long id) {
@@ -143,6 +129,13 @@ public class UserService {
     public List<BasketCell> findUserWithBasketCellsWithBooksById(long id) {
         return userRepository.findUserWithBasketCellsWithBooksById(id)
                 .getBasket().getBasketCells();
+    }
+
+    public boolean sendMessageToAdmin(String message, Long id){
+        User user = userRepository.findUserWithAuthenticateById(id);
+        List<User> admins = userRepository.findAllAdministrators();
+
+        return false;
     }
 
 }

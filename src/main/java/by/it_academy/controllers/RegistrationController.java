@@ -1,5 +1,7 @@
 package by.it_academy.controllers;
 
+import by.it_academy.config.ApplicationConfig;
+import by.it_academy.config.SecurityConfig;
 import by.it_academy.exception.ApplicationBaseException;
 import by.it_academy.model.users.Authenticate;
 import by.it_academy.model.users.User;
@@ -7,12 +9,20 @@ import by.it_academy.services.BookService;
 import by.it_academy.services.UserSecurityService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
+import java.util.Collections;
 
 import static by.it_academy.constants.ErrorConstants.*;
 
@@ -41,10 +51,6 @@ public class RegistrationController{
         try {
             ModelAndView modelAndView = new ModelAndView();
 
-//            if (bindingResult.hasErrors()) {
-//                modelAndView.setViewName("registration");
-//                return modelAndView;
-//            }
             if (user.getName() == null || user.getName().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_NAME);
             }
@@ -73,7 +79,9 @@ public class RegistrationController{
                 return modelAndView;
             }
 
-            user = userService.findUserByAuthenticateLogin(authenticate.getLogin());
+            user = (User) userSecurityService.loadUserByUsername(authenticate.getLogin());
+            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
+//            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
             modelAndView.addObject("books", bookService.findAllBooks());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");

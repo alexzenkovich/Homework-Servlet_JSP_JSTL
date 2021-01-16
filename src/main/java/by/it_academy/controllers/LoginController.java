@@ -6,6 +6,7 @@ import by.it_academy.services.BookService;
 import by.it_academy.services.UserSecurityService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,7 +47,10 @@ public class LoginController{
                 throw new ApplicationBaseException(USER_NOT_EXISTS);
             }
 
-            User user = userService.findUserByAuthenticateLogin(login);
+            User user = (User) userSecurityService.loadUserByUsername(login);
+            if (!user.isEnabled()){
+                throw new ApplicationBaseException("userDisable");
+            }
 
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("books", bookService.findAllBooks());
@@ -70,6 +74,19 @@ public class LoginController{
         httpSession.invalidate();
         ModelAndView modelAndView = new ModelAndView("index");
         modelAndView.addObject("books", bookService.findAllBooks());
+        return modelAndView;
+    }
+
+    @PostMapping("/login/sendMessage")
+    public ModelAndView sendMessageToAdmin(@RequestParam String message,
+                                           @AuthenticationPrincipal User user){
+        boolean messageWasSent = userService.sendMessageToAdmin(message, user.getId());
+        ModelAndView modelAndView = new ModelAndView("templates/login");
+        if (messageWasSent){
+            modelAndView.addObject("messageAccept", ACCEPT_MESSAGE_SENDING);
+        } else {
+            modelAndView.addObject("messageAccept", SENDING_MESSAGE_FAILED);
+        }
         return modelAndView;
     }
 }

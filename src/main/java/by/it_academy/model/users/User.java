@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -70,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority(role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
