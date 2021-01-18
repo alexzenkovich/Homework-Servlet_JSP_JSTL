@@ -10,6 +10,8 @@ import by.it_academy.services.UserSecurityService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -80,8 +82,10 @@ public class RegistrationController{
             }
 
             user = (User) userSecurityService.loadUserByUsername(authenticate.getLogin());
-            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
-//            SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user,
+                    user.getAuthenticate(), user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             modelAndView.addObject("books", bookService.findAllBooks());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");

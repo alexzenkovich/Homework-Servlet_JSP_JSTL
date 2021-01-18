@@ -71,14 +71,9 @@ public class UserController {
             if (authenticate.getPassword() == null || authenticate.getPassword().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_PASSWORD);
             }
-            userPrincipal.setName(user.getName());
-            userPrincipal.setSurname(user.getSurname());
-            userPrincipal.setEmail(user.getEmail());
-            userPrincipal.setAge(user.getAge());
-            userPrincipal.getAuthenticate().setLogin(authenticate.getLogin());
-            userPrincipal.getAuthenticate().setPassword(authenticate.getPassword());
 
-            User changedUser = userService.update(userPrincipal);
+            user.setAuthenticate(authenticate);
+            User changedUser = userService.update(userPrincipal, user);
 
             if (changedUser == null) {
                 throw new ApplicationBaseException(INVALID_UPDATE_USER);

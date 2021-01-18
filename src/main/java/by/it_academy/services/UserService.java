@@ -56,10 +56,6 @@ public class UserService {
         return userRepository.existsUserByAuthenticateLogin(login);
     }
 
-    public User findUserByAuthenticateLogin(String login) {
-        return userRepository.findUserByAuthenticateLogin(login);
-    }
-
     public User findUserWithBasketById(Long id) {
         return userRepository.findUserWithBasketById(id);
     }
@@ -82,7 +78,12 @@ public class UserService {
         return true;
     }
 
-    public User update(User user) {
+    public User update(User userPrincipal, User user) {
+        userPrincipal.setName(user.getName());
+        userPrincipal.setSurname(user.getSurname());
+        userPrincipal.setEmail(user.getEmail());
+        userPrincipal.setAge(user.getAge());
+        userPrincipal.setAuthenticate(user.getAuthenticate());
         return userRepository.saveAndFlush(user);
     }
 

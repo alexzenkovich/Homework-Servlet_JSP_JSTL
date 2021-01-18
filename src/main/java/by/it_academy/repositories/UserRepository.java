@@ -4,11 +4,14 @@ import by.it_academy.model.users.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Transactional
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
 
     @EntityGraph(attributePaths = {"authenticate", "basket"})
     User findUserByAuthenticateLogin(String username);

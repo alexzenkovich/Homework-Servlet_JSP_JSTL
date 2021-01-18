@@ -50,6 +50,7 @@
         </table>
     </div>
     <div id="divMainTable">
+
         <table class="mainTable">
             <thead>
             <tr>
