@@ -12,8 +12,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
 
     private UserSecurityService userSecurityService;
 
@@ -73,8 +78,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+<<<<<<< HEAD
 
         auth.userDetailsService(userSecurityService)
                 .passwordEncoder(passwordEncoder());
+=======
+        auth.jdbcAuthentication()
+        .dataSource(dataSource)
+        .passwordEncoder(NoOpPasswordEncoder.getInstance())
+        .usersByUsernameQuery("select name, surname, email, age from usrs u " +
+                "inner join authenticate a on u.id = a.user_id where a.login = ?")
+        .authoritiesByUsernameQuery("select a.login, ur.roles from usrs u " +
+                "inner join user_role ur on u.id = ur.user_id" +
+                "inner join authenticate a on u.id = a.user_id" +
+                "where a.login=?");
+>>>>>>> master
     }
 }

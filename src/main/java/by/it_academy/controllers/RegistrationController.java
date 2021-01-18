@@ -1,29 +1,23 @@
 package by.it_academy.controllers;
 
-import by.it_academy.config.ApplicationConfig;
-import by.it_academy.config.SecurityConfig;
 import by.it_academy.exception.ApplicationBaseException;
+import by.it_academy.model.basket.Basket;
 import by.it_academy.model.users.Authenticate;
+import by.it_academy.model.users.Role;
 import by.it_academy.model.users.User;
 import by.it_academy.services.BookService;
 import by.it_academy.services.UserSecurityService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.security.Principal;
 import java.util.Collections;
 
 import static by.it_academy.constants.ErrorConstants.*;
@@ -75,8 +69,9 @@ public class RegistrationController{
                 throw new ApplicationBaseException(INVALID_USER_REGISTRATION_DATA);
             }
 
-            if(!userService.create(user, authenticate)) {
-                modelAndView.addObject("error", INVALID_USER_REGISTRATION_DATA);
+            User userFromDB = userService.findUserByAuthenticateLogin(authenticate.getLogin());
+            if(userFromDB != null) {
+                modelAndView.addObject("error", USER_ALREADY_EXISTS);
                 modelAndView.setViewName("templates/registration");
                 return modelAndView;
             }
@@ -85,6 +80,7 @@ public class RegistrationController{
             Authentication authentication = new UsernamePasswordAuthenticationToken(user,
                     user.getAuthenticate(), user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
             modelAndView.addObject("books", bookService.findAllBooks());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));

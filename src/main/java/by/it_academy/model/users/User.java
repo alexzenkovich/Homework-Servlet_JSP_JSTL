@@ -8,23 +8,27 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+=======
+import java.util.*;
+>>>>>>> master
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(exclude = {"authenticate", "role", "basket"})
-@ToString(exclude = {"authenticate", "role", "basket"})
+@EqualsAndHashCode(exclude = {"authenticate", "roles", "basket"})
+@ToString(exclude = {"authenticate", "roles", "basket"})
 
 @Entity
-@Table
+@Table(name = "usrs")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
     private String surname;
@@ -35,8 +39,10 @@ public class User implements UserDetails {
 
     private Authenticate authenticate;
 
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 
@@ -71,7 +77,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+<<<<<<< HEAD
         return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+=======
+        return null;
+>>>>>>> master
     }
 
     @Override

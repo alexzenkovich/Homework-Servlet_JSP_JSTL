@@ -41,9 +41,9 @@ public class UserService {
         admin1.setAuthenticate(new Authenticate("admin1", "1"));
         admin2.setAuthenticate(new Authenticate("admin2", "1"));
         user.setAuthenticate(new Authenticate("user", "user"));
-        admin1.setRole(Role.ADMINISTRATOR);
-        admin2.setRole(Role.ADMINISTRATOR);
-        user.setRole(Role.USER);
+        admin1.getRoles().add(Role.ADMINISTRATOR);
+        admin2.getRoles().add(Role.ADMINISTRATOR);
+        user.getRoles().add(Role.USER);
         admin1.addBasket(new Basket());
         admin2.addBasket(new Basket());
         user.addBasket(new Basket());
@@ -60,22 +60,12 @@ public class UserService {
         return userRepository.findUserWithBasketById(id);
     }
 
-    public boolean create(User user, Authenticate authenticate) {
-        User userFromDB = userRepository.findUserByAuthenticateLogin(authenticate.getLogin());
+    public User findUserByAuthenticateLogin(String login){
+        return userRepository.findUserByAuthenticateLogin(login);
+    }
 
-        if (userFromDB != null) {
-            return false;
-        }
-
-        user.setRole(Role.USER);
-        authenticate.setProfileEnable(true);
-        user.addAuthenticate(authenticate);
-        user.addBasket(new Basket());
-        if(user.getRole() == null) {
-            user.setRole(Role.USER);
-        }
-        userRepository.save(user);
-        return true;
+    public User create(User user) {
+        return userRepository.save(user);
     }
 
     public User update(User userPrincipal, User user) {
