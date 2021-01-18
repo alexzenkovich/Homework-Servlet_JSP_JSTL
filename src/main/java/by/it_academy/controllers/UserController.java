@@ -25,7 +25,7 @@ public class UserController {
         try {
             ModelAndView modelAndView = new ModelAndView("users");
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
-            if (user.getRoles().contains(Role.ADMINISTRATOR)) {
+            if (user.getRole() == Role.ADMINISTRATOR) {
                 modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             }
             return modelAndView;
@@ -82,7 +82,7 @@ public class UserController {
             modelAndView.addObject("user", changedUser);
             modelAndView.setViewName("profile");
 
-            if (user.getRoles().contains(Role.ADMINISTRATOR)) {
+            if (user.getRole() == Role.ADMINISTRATOR) {
                 modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             }
 

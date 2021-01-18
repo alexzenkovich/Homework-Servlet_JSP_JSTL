@@ -19,7 +19,7 @@ import java.util.*;
 @ToString(exclude = {"authenticate", "role", "basket"})
 
 @Entity
-@Table(name = "usrs")
+@Table
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +33,10 @@ public class User implements UserDetails {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Authenticate authenticate;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private List<Role> role;
+    private Role role;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-
     private Basket basket;
 
     public User(String name, String surname, String email, int age) {
@@ -71,7 +68,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return ;
+        return Arrays.asList(new SimpleGrantedAuthority(role.name()));
 
     }
 

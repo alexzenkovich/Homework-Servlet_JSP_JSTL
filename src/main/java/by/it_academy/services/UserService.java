@@ -41,9 +41,9 @@ public class UserService {
         admin1.setAuthenticate(new Authenticate("admin1", "1"));
         admin2.setAuthenticate(new Authenticate("admin2", "1"));
         user.setAuthenticate(new Authenticate("user", "user"));
-        admin1.getRoles().add(Role.ADMINISTRATOR);
-        admin2.getRoles().add(Role.ADMINISTRATOR);
-        user.getRoles().add(Role.USER);
+        admin1.setRole(Role.ADMINISTRATOR);
+        admin2.setRole(Role.ADMINISTRATOR);
+        user.setRole(Role.USER);
         admin1.addBasket(new Basket());
         admin2.addBasket(new Basket());
         user.addBasket(new Basket());
