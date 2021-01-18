@@ -1,27 +1,22 @@
 package by.it_academy.model.users;
 
 import by.it_academy.model.basket.Basket;
+
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthoritiesContainer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-<<<<<<< HEAD
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-=======
 import java.util.*;
->>>>>>> master
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@EqualsAndHashCode(exclude = {"authenticate", "roles", "basket"})
-@ToString(exclude = {"authenticate", "roles", "basket"})
+@EqualsAndHashCode(exclude = {"authenticate", "role", "basket"})
+@ToString(exclude = {"authenticate", "role", "basket"})
 
 @Entity
 @Table(name = "usrs")
@@ -36,13 +31,12 @@ public class User implements UserDetails {
     private int age;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-
     private Authenticate authenticate;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> role;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 
@@ -77,11 +71,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-<<<<<<< HEAD
-        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
-=======
-        return null;
->>>>>>> master
+        return ;
+
     }
 
     @Override
