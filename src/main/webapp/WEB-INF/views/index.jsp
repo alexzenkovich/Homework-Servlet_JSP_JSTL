@@ -17,6 +17,7 @@
                 <tr>
                     <sec:authorize access="hasAuthority('ADMINISTRATOR')">
                         <td><c:import url="templates/buttons/books_button.jsp"/></td>
+                        <td><c:import url="templates/buttons/users_button.jsp"/></td>
                     </sec:authorize>
                     <td><c:import url="templates/buttons/basket_button.jsp"/></td>
                     <td><c:import url="templates/buttons/profile_button.jsp"/></td>
@@ -49,6 +50,7 @@
         </table>
     </div>
     <div id="divMainTable">
+
         <table class="mainTable">
             <thead>
             <tr>

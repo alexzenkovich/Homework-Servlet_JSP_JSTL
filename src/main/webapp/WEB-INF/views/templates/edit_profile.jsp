@@ -9,15 +9,15 @@
 
 <button class="open-button" onclick="openForm()" >edit profile</button>
 <div class="form-popup" id="myForm">
-    <form method="post" action="<c:url value="/user/update"/>" class="form-container">
+    <form method="post" action="<c:url value="/users/update"/>" class="form-container">
         <h2>Edit your data:</h2>
 
-        <p>Name: <input type="text" name="name" placeholder="Enter your name"/> <br></p>
-        <p>Surname: <input type="text" name="surname" placeholder="Enter your surname"/> <br></p>
-        <p>Email: <input type="text" name="email" placeholder="Enter your email"/> <br></p>
-        <p>Age: <input type="number" name="age" placeholder="Enter your age"/> <br></p>
-        <p>Login: <input type="text" name="login" placeholder="Enter your login"/> <br></p>
-        <p>Password: <input type="password" name="password" placeholder="Enter your password"/> <br></p>
+        <p>Name: <input type="text" name="name" placeholder="Enter your name" required/> <br></p>
+        <p>Surname: <input type="text" name="surname" placeholder="Enter your surname" required/> <br></p>
+        <p>Email: <input type="email" name="email" placeholder="Enter your email" required/> <br></p>
+        <p>Age: <input type="number" name="age" placeholder="Enter your age" /> <br></p>
+        <p>Login: <input type="text" name="login" placeholder="Enter your login" required/> <br></p>
+        <p>Password: <input type="password" name="password" placeholder="Enter your password" required/> <br></p>
 
         <button type="submit" class="btn">Save</button>
         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>

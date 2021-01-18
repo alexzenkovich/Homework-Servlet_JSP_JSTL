@@ -16,4 +16,6 @@ public interface ErrorConstants {
     String INVALID_BOOK_TITLE = "Invalid title`s data";
     String INVALID_BOOK_NUMBER_OF_PAGES = "Invalid number of page";
     String INVALID_UPDATE_USER = "Invalid process user updating";
+    String ACCEPT_MESSAGE_SENDING = "Your message was sent to the administrator. Wait unblocking.";
+    String SENDING_MESSAGE_FAILED = "Your message was not sent. Try again";
 }

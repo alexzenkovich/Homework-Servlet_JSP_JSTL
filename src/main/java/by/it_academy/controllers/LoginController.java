@@ -29,6 +29,7 @@ public class LoginController{
 
     @GetMapping("/login")
     protected ModelAndView loadLoginPage() {
+
         return new ModelAndView("templates/login");
     }
 
@@ -46,7 +47,10 @@ public class LoginController{
                 throw new ApplicationBaseException(USER_NOT_EXISTS);
             }
 
-            User user = userService.findUserByAuthenticateLogin(login);
+            User user = (User) userSecurityService.loadUserByUsername(login);
+            if (!user.isEnabled()){
+                throw new ApplicationBaseException("userDisable");
+            }
 
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("books", bookService.findAllBooks());
@@ -73,4 +77,16 @@ public class LoginController{
         return modelAndView;
     }
 
+    @PostMapping("/login/sendMessage")
+    public ModelAndView sendMessageToAdmin(@RequestParam String message,
+                                           @AuthenticationPrincipal User user){
+        boolean messageWasSent = userService.sendMessageToAdmin(message, user.getId());
+        ModelAndView modelAndView = new ModelAndView("templates/login");
+        if (messageWasSent){
+            modelAndView.addObject("messageAccept", ACCEPT_MESSAGE_SENDING);
+        } else {
+            modelAndView.addObject("messageAccept", SENDING_MESSAGE_FAILED);
+        }
+        return modelAndView;
+    }
 }

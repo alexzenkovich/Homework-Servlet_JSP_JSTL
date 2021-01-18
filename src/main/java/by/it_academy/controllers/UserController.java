@@ -8,18 +8,33 @@ import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import static by.it_academy.constants.ErrorConstants.*;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping()
+    public ModelAndView loadUsersPage(@AuthenticationPrincipal User user) {
+        try {
+            ModelAndView modelAndView = new ModelAndView("users");
+            modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
+            if (user.getRoles().contains(Role.ADMINISTRATOR)) {
+                modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
+            }
+            return modelAndView;
+        } catch (Exception e) {
+            ModelAndView modelAndView = new ModelAndView("error");
+            modelAndView.addObject("error", e.getMessage());
+            return modelAndView;
+        }
+    }
 
     @GetMapping("/update")
     public ModelAndView loadEditProfilePage() {
@@ -30,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public ModelAndView processEditProfilePage(@AuthenticationPrincipal User oldUser,
+    public ModelAndView processEditProfilePage(@AuthenticationPrincipal User userPrincipal,
                                                @Validated(value = User.class)
                                                @ModelAttribute("user") User user,
                                                @ModelAttribute("authenticate") Authenticate authenticate) {
@@ -50,19 +65,22 @@ public class UserController {
             if (user.getAge() == 0 || String.valueOf(user.getAge()).isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_AGE);
             }
-            if (user.getAuthenticate().getLogin() == null || user.getAuthenticate().getLogin().isEmpty()) {
+            if (authenticate.getLogin() == null || authenticate.getLogin().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_LOGIN);
             }
-            if (user.getAuthenticate().getPassword() == null || user.getAuthenticate().getPassword().isEmpty()) {
+            if (authenticate.getPassword() == null || authenticate.getPassword().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_PASSWORD);
             }
-            User changedUser = userService.update(user);
+
+            user.setAuthenticate(authenticate);
+            User changedUser = userService.update(userPrincipal, user);
 
             if (changedUser == null) {
                 throw new ApplicationBaseException(INVALID_UPDATE_USER);
             }
+
             modelAndView.addObject("user", changedUser);
-            modelAndView.setViewName("user");
+            modelAndView.setViewName("profile");
 
             if (user.getRoles().contains(Role.ADMINISTRATOR)) {
                 modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
@@ -79,11 +97,8 @@ public class UserController {
     @GetMapping("/profile")
     public ModelAndView loadUserProfilePage(@AuthenticationPrincipal User user) {
         try {
-            ModelAndView modelAndView = new ModelAndView("user");
+            ModelAndView modelAndView = new ModelAndView("profile");
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
-            if (user.getRoles().contains(Role.ADMINISTRATOR)) {
-                modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
-            }
             return modelAndView;
         } catch (Exception e) {
             ModelAndView modelAndView = new ModelAndView("error");
@@ -94,10 +109,10 @@ public class UserController {
 
     @PostMapping("/blocking")
     public ModelAndView processBlockingUser(@AuthenticationPrincipal User user,
-            @RequestParam Long userId) {
+                                            @RequestParam Long userId) {
         try {
             userService.disableUserProfile(userId);
-            ModelAndView modelAndView = new ModelAndView("user");
+            ModelAndView modelAndView = new ModelAndView("users");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -110,10 +125,10 @@ public class UserController {
 
     @PostMapping("/unblocking")
     public ModelAndView processUnblockingUser(@AuthenticationPrincipal User user,
-                                            @RequestParam Long userId) {
+                                              @RequestParam Long userId) {
         try {
             userService.enableUserProfile(userId);
-            ModelAndView modelAndView = new ModelAndView("user");
+            ModelAndView modelAndView = new ModelAndView("users");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -124,11 +139,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/delete/{id}")
-    public ModelAndView processDeletingUser(@AuthenticationPrincipal User user, @PathVariable Long id) {
+    @PostMapping("/deleteUser")
+    public ModelAndView processDeletingUser(@AuthenticationPrincipal User user, @RequestParam Long userId) {
         try{
-            userService.deleteUserById(id);
-            ModelAndView modelAndView = new ModelAndView("user");
+            userService.deleteUserById(userId);
+            ModelAndView modelAndView = new ModelAndView("users");
             modelAndView.addObject("users", userService.findAllUsersWithAuthenticate());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;

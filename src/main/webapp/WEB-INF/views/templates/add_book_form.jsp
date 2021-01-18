@@ -27,9 +27,8 @@
                 </tr>
                 <tr>
                     <td>Number of pages:</td>
-                    <td><input type="number" name="numberOfPages" placeholder="Enter number of pages"/></td>
+                    <td><input type="text" name="numberOfPages" placeholder="Enter number of pages"/></td>
                 </tr>
-                <tr>
                     <td><input type="submit" value="add boo"></td>
                 </tr>
             </table>
@@ -37,7 +36,7 @@
     </div>
 </main>
 <footer>
-    <c:import url="buttons/to_home_button.jsp"/>
+
 </footer>
 </body>
 </html>

@@ -20,5 +20,4 @@ public interface BasketCellRepository extends JpaRepository<BasketCell, Long> {
     @EntityGraph(attributePaths = {"basket", "book"})
     @Query("from BasketCell where basket.id = ?1")
     List<BasketCell> findBasketCellsWithBookByBasketId(long id);
-
 }

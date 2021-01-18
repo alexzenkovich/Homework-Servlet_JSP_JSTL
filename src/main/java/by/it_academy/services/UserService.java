@@ -1,5 +1,6 @@
 package by.it_academy.services;
 
+import by.it_academy.exception.ApplicationBaseException;
 import by.it_academy.model.basket.Basket;
 import by.it_academy.model.basket.BasketCell;
 import by.it_academy.model.books.Book;
@@ -15,6 +16,8 @@ import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static by.it_academy.constants.ErrorConstants.*;
 
 @Service
 @Transactional
@@ -53,29 +56,24 @@ public class UserService {
         return userRepository.existsUserByAuthenticateLogin(login);
     }
 
-    public User findUserByAuthenticateLogin(String login) {
-        return userRepository.findUserByAuthenticateLogin(login);
-    }
-
     public User findUserWithBasketById(Long id) {
         return userRepository.findUserWithBasketById(id);
     }
 
-    public boolean create(User user, Authenticate authenticate) {
-        User userFromDB = userRepository.findUserByAuthenticateLogin(authenticate.getLogin());
-
-        if (userFromDB != null) {
-            return false;
-        }
-        user.setRole(Role.USER);
-        authenticate.setProfileEnable(true);
-        user.addAuthenticate(authenticate);
-        user.addBasket(new Basket());
-        userRepository.save(user);
-        return true;
+    public User findUserByAuthenticateLogin(String login){
+        return userRepository.findUserByAuthenticateLogin(login);
     }
 
-    public User update(User user) {
+    public User create(User user) {
+        return userRepository.save(user);
+    }
+
+    public User update(User userPrincipal, User user) {
+        userPrincipal.setName(user.getName());
+        userPrincipal.setSurname(user.getSurname());
+        userPrincipal.setEmail(user.getEmail());
+        userPrincipal.setAge(user.getAge());
+        userPrincipal.setAuthenticate(user.getAuthenticate());
         return userRepository.saveAndFlush(user);
     }
 
@@ -122,6 +120,13 @@ public class UserService {
     public List<BasketCell> findUserWithBasketCellsWithBooksById(long id) {
         return userRepository.findUserWithBasketCellsWithBooksById(id)
                 .getBasket().getBasketCells();
+    }
+
+    public boolean sendMessageToAdmin(String message, Long id){
+        User user = userRepository.findUserWithAuthenticateById(id);
+        List<User> admins = userRepository.findAllAdministrators();
+
+        return false;
     }
 
 }

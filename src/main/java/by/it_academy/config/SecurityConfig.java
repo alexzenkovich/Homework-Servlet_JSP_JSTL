@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.formLogin()
-                .loginPage("/login")
+                .loginPage("/templates/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("login")
                 .passwordParameter("password")
@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .sessionFixation()
-                    .newSession()
+                .newSession()
                 .maximumSessions(1)
                 .expiredUrl("/index");
     }
@@ -75,8 +75,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return NoOpPasswordEncoder.getInstance();
     }
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+<<<<<<< HEAD
+
+        auth.userDetailsService(userSecurityService)
+                .passwordEncoder(passwordEncoder());
+=======
         auth.jdbcAuthentication()
         .dataSource(dataSource)
         .passwordEncoder(NoOpPasswordEncoder.getInstance())
@@ -86,5 +92,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "inner join user_role ur on u.id = ur.user_id" +
                 "inner join authenticate a on u.id = a.user_id" +
                 "where a.login=?");
+>>>>>>> master
     }
 }

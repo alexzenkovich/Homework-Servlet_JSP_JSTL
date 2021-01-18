@@ -8,8 +8,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+<<<<<<< HEAD
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+=======
+import java.util.*;
+>>>>>>> master
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
@@ -29,6 +36,7 @@ public class User implements UserDetails {
     private int age;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+
     private Authenticate authenticate;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -37,6 +45,7 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+
     private Basket basket;
 
     public User(String name, String surname, String email, int age) {
@@ -68,7 +77,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+<<<<<<< HEAD
+        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+=======
         return null;
+>>>>>>> master
     }
 
     @Override

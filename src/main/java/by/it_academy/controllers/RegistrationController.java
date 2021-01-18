@@ -9,14 +9,15 @@ import by.it_academy.services.BookService;
 import by.it_academy.services.UserSecurityService;
 import by.it_academy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.Collections;
 
 import static by.it_academy.constants.ErrorConstants.*;
@@ -42,10 +43,10 @@ public class RegistrationController{
     @PostMapping("/registration")
     public ModelAndView processRegistration(@Validated(value = User.class)
                                             @ModelAttribute("user") User user,
-                                            @Validated(value = Authenticate.class)
                                             @ModelAttribute("authenticate") Authenticate authenticate) {
         try {
             ModelAndView modelAndView = new ModelAndView();
+
             if (user.getName() == null || user.getName().isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_NAME);
             }
@@ -75,10 +76,13 @@ public class RegistrationController{
                 return modelAndView;
             }
 
-            user = userService.findUserByAuthenticateLogin(authenticate.getLogin());
-//            UserDetails createdUser = userSecurityService.loadUserByUsername(user.getUsername());
+            user = (User) userSecurityService.loadUserByUsername(authenticate.getLogin());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user,
+                    user.getAuthenticate(), user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-=======     modelAndView.addObject("books", bookService.findAllBooks());
+
+            modelAndView.addObject("books", bookService.findAllBooks());
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");
 

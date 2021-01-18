@@ -15,6 +15,7 @@
             <tr>
                 <sec:authorize access="hasAuthority('ADMINISTRATOR')">
                     <td><c:import url="templates/buttons/books_button.jsp"/></td>
+                    <td><c:import url="templates/buttons/users_button.jsp"/></td>
                 </sec:authorize>
                 <td><c:import url="templates/buttons/profile_button.jsp"/></td>
                 <td><c:import url="templates/buttons/logout_button.jsp"/></td>
@@ -30,13 +31,13 @@
         <h2>Books in your basket:</h2>
         <table class="mainTable">
             <thead>
-                <tr>
-                    <th>Author</th>
-                    <th>Title</th>
-                    <th>Date of taking</th>
-                    <th>Days for reading</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Date of taking</th>
+                <th>Days for reading</th>
+                <th></th>
+            </tr>
             </thead>
             <c:forEach var="basketCell" items="${booksInBasket}">
                 <tr>
