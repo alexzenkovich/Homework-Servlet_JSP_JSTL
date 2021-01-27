@@ -78,7 +78,11 @@ public class UserService {
     }
 
     public void deleteUserById(Long userId) {
-        userRepository.removeUserById(userId);
+        User user = userRepository.findUserWithBasketById(userId);
+        if (user == null){
+            throw new ApplicationBaseException(USER_NOT_FOUND);
+        }
+        userRepository.delete(user);
     }
 
     public List<User> findAllUsersWithAuthenticate() {

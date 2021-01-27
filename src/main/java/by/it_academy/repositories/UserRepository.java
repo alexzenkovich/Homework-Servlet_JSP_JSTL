@@ -4,10 +4,8 @@ import by.it_academy.model.users.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Transactional
@@ -25,8 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @EntityGraph(attributePaths = "authenticate")
     @Query("select u from User u")
     List<User> findAllUsersWithAuthenticate();
-
-    void removeUserById(Long id);
 
     @EntityGraph(attributePaths = "authenticate")
     @Query("select u from User u where u.id = ?1")
