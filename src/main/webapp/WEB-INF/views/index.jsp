@@ -49,8 +49,8 @@
             </tr>
         </table>
     </div>
+<%--    <sec:authentication property="principal.authenticate.login"/>--%>
     <div id="divMainTable">
-
         <table class="mainTable">
             <thead>
             <tr>
@@ -75,7 +75,7 @@
                         <td>
                             <form method="post" action="<c:url value="/addToBasket"/>">
                                 <label>
-                                    <input width="20" type="number" min="1" name="daysForReading"/>
+                                    <input width="20" type="number" min="1" name="daysForReading" required/>
                                 </label>
                                 <input type="hidden" name="userId" value="${user.id}">
                                 <input type="hidden" name="bookId" value="${book.id}">

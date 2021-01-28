@@ -65,6 +65,8 @@ public class UserService {
     }
 
     public User create(User user) {
+        user.setRole(Role.USER);
+        user.addBasket(new Basket());
         return userRepository.save(user);
     }
 
