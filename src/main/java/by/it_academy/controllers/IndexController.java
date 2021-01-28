@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.awt.print.Pageable;
 import java.security.Principal;
 
 @Controller
@@ -21,20 +22,12 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ModelAndView loadHomePage() {
-        return methodLoadIndexPage();
-    }
-
-    @GetMapping("/index")
-    public ModelAndView loadIndexPage() {
-        return methodLoadIndexPage();
-    }
-
-    private ModelAndView methodLoadIndexPage() {
+    @GetMapping({"/","/index"})
+    public ModelAndView loadIndexPage(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size) {
         try{
             ModelAndView modelAndView = new ModelAndView("index");
-            modelAndView.addObject("books", bookService.findAllBooks(5));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             return modelAndView;
         } catch (Exception e) {
             ModelAndView modelAndView = new ModelAndView("error");
@@ -44,10 +37,12 @@ public class IndexController {
     }
 
     @PostMapping("/index")
-    public ModelAndView returnToIndex(@AuthenticationPrincipal User user) {
+    public ModelAndView returnToIndex(@AuthenticationPrincipal User user,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size) {
         try {
             ModelAndView modelAndView = new ModelAndView("index");
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;

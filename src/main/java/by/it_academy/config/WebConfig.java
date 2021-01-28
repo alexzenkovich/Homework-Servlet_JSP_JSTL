@@ -1,6 +1,7 @@
 package by.it_academy.config;
 
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @ComponentScan(basePackages = "by.it_academy.controllers")
+@EnableSpringDataWebSupport
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

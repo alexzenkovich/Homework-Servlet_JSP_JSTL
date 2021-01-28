@@ -19,4 +19,5 @@ public interface ErrorConstants {
     String INVALID_UPDATE_USER = "Invalid process user updating";
     String ACCEPT_MESSAGE_SENDING = "Your message was sent to the administrator. Wait unblocking.";
     String SENDING_MESSAGE_FAILED = "Your message was not sent. Try again";
+    String HAS_NO_ANY_BOOKS = "Library has no any books";
 }

@@ -29,7 +29,7 @@
                     <td>Number of pages:</td>
                     <td><input type="text" name="numberOfPages" placeholder="Enter number of pages"/></td>
                 </tr>
-                    <td><input type="submit" value="add boo"></td>
+                    <td><input type="submit" value="add book"></td>
                 </tr>
             </table>
         </form>

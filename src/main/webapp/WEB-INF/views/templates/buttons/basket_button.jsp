@@ -8,7 +8,6 @@
 <body>
 <div id="basket_button">
     <form method="post" action="<c:url value="/basket"/>">
-        <input type="hidden" name="userId" value="<sec:authentication property="principal.id"/>">
         <input type="submit" value="Your basket ${numberOfBooksInBasket}">
     </form>
 </div>

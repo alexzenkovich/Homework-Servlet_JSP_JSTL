@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Collection;
@@ -47,7 +48,9 @@ public class RegistrationController{
     @PostMapping("/registration")
     public ModelAndView processRegistration(@Validated(value = User.class)
                                             @ModelAttribute("user") User user,
-                                            @ModelAttribute("authenticate") Authenticate authenticate) {
+                                            @ModelAttribute("authenticate") Authenticate authenticate,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
         try {
             ModelAndView modelAndView = new ModelAndView();
 
@@ -87,7 +90,7 @@ public class RegistrationController{
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");
 

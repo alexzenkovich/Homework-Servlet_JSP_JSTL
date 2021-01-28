@@ -26,10 +26,12 @@ public class BookController {
     private UserService userService;
 
     @GetMapping("/books")
-    public ModelAndView loadBooksPage(@AuthenticationPrincipal User user){
+    public ModelAndView loadBooksPage(@AuthenticationPrincipal User user,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size){
         try{
             ModelAndView modelAndView = new ModelAndView("books");
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -46,7 +48,6 @@ public class BookController {
         try{
             ModelAndView modelAndView = new ModelAndView("book");
             modelAndView.addObject("book", bookService.findBookById(bookId));
-            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -59,11 +60,13 @@ public class BookController {
 
     @PostMapping("/deleteBook")
     public ModelAndView deleteBook(@AuthenticationPrincipal User user,
-                                   @RequestParam Long bookId) {
+                                   @RequestParam Long bookId,
+                                   @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size) {
         try {
             bookService.deleteBookById(bookId);
             ModelAndView modelAndView = new ModelAndView("books");
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -83,7 +86,9 @@ public class BookController {
 
     @PostMapping("/addBook")
     public ModelAndView addBook(@AuthenticationPrincipal User user,
-                                @Validated(value = Book.class) @ModelAttribute Book book) {
+                                @Validated(value = Book.class) @ModelAttribute Book book,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size) {
         try {
             ModelAndView modelAndView = new ModelAndView("books");
             if (book.getAuthor() == null || book.getAuthor().isEmpty()){
@@ -96,7 +101,7 @@ public class BookController {
                 modelAndView.addObject("error", INVALID_BOOK_NUMBER_OF_PAGES);
             }
             bookService.addBook(book);
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;

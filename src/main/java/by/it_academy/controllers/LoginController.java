@@ -35,7 +35,9 @@ public class LoginController{
 
     @PostMapping("/login")
     public ModelAndView processLogin(@RequestParam String login,
-                                     @RequestParam String password) {
+                                     @RequestParam String password,
+                                     @RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size) {
         try {
             if (login == null || login.isEmpty()) {
                 throw new ApplicationBaseException(INVALID_USER_LOGIN);
@@ -53,7 +55,7 @@ public class LoginController{
             }
 
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
 
@@ -73,7 +75,7 @@ public class LoginController{
     public ModelAndView processLogout(HttpSession httpSession) {
         httpSession.invalidate();
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("books", bookService.findAllBooks(10));
+        modelAndView.addObject("books", bookService.findAllBooks());
         return modelAndView;
     }
 

@@ -23,13 +23,15 @@ public class BasketController {
     private BookService bookService;
 
     @PostMapping("/basket")
-    public ModelAndView processBasketPage(@AuthenticationPrincipal User user) {
+    public ModelAndView processBasketPage(@AuthenticationPrincipal User user,
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "10") int size) {
         try {
             List<BasketCell> basketCells = userService.findUserWithBasketCellsWithBooksById(user.getId());
             ModelAndView modelAndView = new ModelAndView();
             if (basketCells.size() == 0) {
                 modelAndView.setViewName("index");
-                modelAndView.addObject("books", bookService.findAllBooks(10));
+                modelAndView.addObject("books", bookService.findAllBooks(page, size));
                 modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
                 modelAndView.addObject("error", YOUR_BASKET_IS_EMPTY);
             } else {
@@ -47,7 +49,9 @@ public class BasketController {
     @PostMapping("/addToBasket")
     public ModelAndView addBookToBasket(@AuthenticationPrincipal User user,
                                         @RequestParam int daysForReading,
-                                        @RequestParam long bookId) {
+                                        @RequestParam long bookId,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "10") int size) {
         try {
             ModelAndView modelAndView = new ModelAndView("index");
             if (daysForReading == 0) {
@@ -56,7 +60,7 @@ public class BasketController {
                 userService.addBookToUser(user.getId(), bookId, daysForReading);
                 modelAndView.addObject("basketMessage", BOOK_WAS_ADDED_TO_BASKET);
             }
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -69,13 +73,15 @@ public class BasketController {
 
     @PostMapping("/deleteFromBasket")
     public ModelAndView processDeleteBasket(@AuthenticationPrincipal User user,
-                                            @RequestParam Long basketCellId) {
+                                            @RequestParam Long basketCellId,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
         try {
             userService.deleteBookByUserId(user.getId(), basketCellId);
 
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("basketMessage", BOOK_WAS_DELETED_FROM_BASKET);
-            modelAndView.addObject("books", bookService.findAllBooks(10));
+            modelAndView.addObject("books", bookService.findAllBooks(page, size));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("basket");
