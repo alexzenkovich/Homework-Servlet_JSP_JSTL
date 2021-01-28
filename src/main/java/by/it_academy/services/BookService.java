@@ -3,8 +3,10 @@ package by.it_academy.services;
 import by.it_academy.model.books.Book;
 import by.it_academy.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
@@ -35,8 +37,10 @@ public class BookService {
 //        bookRepository.save(new Book("Korney Chukovskiy", "Tarakanishche", 3));
     }
 
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+    public Page<Book> findAllBooks(int pageSize) {
+        Pageable pageable = PageRequest.of(0,pageSize, Sort.Direction.ASC);
+        Page<Book> page = bookRepository.findAll(pageable);
+        return page;
     }
 
     public Book findBookById(Long bookId) {

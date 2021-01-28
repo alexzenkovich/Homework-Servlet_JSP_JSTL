@@ -82,7 +82,7 @@ public class RegistrationController{
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("index");
 

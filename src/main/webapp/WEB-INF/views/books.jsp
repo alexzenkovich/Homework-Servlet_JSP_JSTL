@@ -41,7 +41,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="book" items="${books}">
+            <c:forEach var="book" items="${param.books}">
                 <tr>
                     <td>${book.id}</td>
                     <td>${book.author}</td>
@@ -49,7 +49,6 @@
                     <td>${book.numberOfPages}</td>
                     <td>
                         <form method="post" action="<c:url value="/getBookInfo"/>">
-                            <input type="hidden" name="userId" value="<sec:authentication property="principal.id"/>">
                             <input type="hidden" name="bookId" value="${book.id}">
                             <input type="submit" value="about book"/>
                         </form>

@@ -29,7 +29,7 @@ public class BookController {
     public ModelAndView loadBooksPage(@AuthenticationPrincipal User user){
         try{
             ModelAndView modelAndView = new ModelAndView("books");
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -46,7 +46,7 @@ public class BookController {
         try{
             ModelAndView modelAndView = new ModelAndView("book");
             modelAndView.addObject("book", bookService.findBookById(bookId));
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -63,7 +63,7 @@ public class BookController {
         try {
             bookService.deleteBookById(bookId);
             ModelAndView modelAndView = new ModelAndView("books");
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -96,7 +96,7 @@ public class BookController {
                 modelAndView.addObject("error", INVALID_BOOK_NUMBER_OF_PAGES);
             }
             bookService.addBook(book);
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;

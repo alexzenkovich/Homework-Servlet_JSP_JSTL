@@ -42,8 +42,8 @@
             <tr>
                 <td></td>
                 <td>
-                    <c:if test="${error != null}"><h3>${error}</h3></c:if>
-                    <c:if test="${basketMessage != null}">${basketMessage}</c:if>
+                    <c:if test="${param.error != null}"><h3>${error}</h3></c:if>
+                    <c:if test="${param.basketMessage != null}">${basketMessage}</c:if>
                 </td>
                 <td></td>
             </tr>
@@ -77,14 +77,12 @@
                                 <label>
                                     <input width="20" type="number" min="1" name="daysForReading"/>
                                 </label>
-                                <input type="hidden" name="userId" value="${user.id}">
                                 <input type="hidden" name="bookId" value="${book.id}">
                                 <input type="submit" value="add book"/>
                             </form>
                         </td>
                         <td>
                             <form method="post" action="<c:url value="/getBookInfo"/>">
-                                <input type="hidden" name="userId" value="${user.id}">
                                 <input type="hidden" name="bookId" value="${book.id}">
                                 <input type="submit" value="about book"/>
                             </form>
@@ -99,7 +97,7 @@
 
 
 <footer>
-    <h2 align="center">Your advertisement could be here</h2>
+    <h2 align="center">@All rights reserved</h2>
 </footer>
 
 </body>

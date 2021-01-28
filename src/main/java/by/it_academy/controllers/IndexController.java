@@ -34,7 +34,7 @@ public class IndexController {
     private ModelAndView methodLoadIndexPage() {
         try{
             ModelAndView modelAndView = new ModelAndView("index");
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(5));
             return modelAndView;
         } catch (Exception e) {
             ModelAndView modelAndView = new ModelAndView("error");
@@ -47,7 +47,7 @@ public class IndexController {
     public ModelAndView returnToIndex(@AuthenticationPrincipal User user) {
         try {
             ModelAndView modelAndView = new ModelAndView("index");
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;

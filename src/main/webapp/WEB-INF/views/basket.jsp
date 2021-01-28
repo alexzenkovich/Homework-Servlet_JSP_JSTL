@@ -47,7 +47,6 @@
                     <td>${basketCell.daysForReading}</td>
                     <td>
                         <form method="post" action="<c:url value="/deleteFromBasket"/>">
-                            <input type="hidden" name="userId" value="<sec:authentication property="principal.id"/>">
                             <input type="hidden" name="basketCellId" value="${basketCell.id}">
                             <input type="submit" value="delete"/>
                         </form>

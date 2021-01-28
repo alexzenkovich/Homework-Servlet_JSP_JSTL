@@ -29,7 +29,7 @@ public class BasketController {
             ModelAndView modelAndView = new ModelAndView();
             if (basketCells.size() == 0) {
                 modelAndView.setViewName("index");
-                modelAndView.addObject("books", bookService.findAllBooks());
+                modelAndView.addObject("books", bookService.findAllBooks(10));
                 modelAndView.addObject("numberOfBooksInBasket", userService.countUserBasketBasketCellsById(user.getId()));
                 modelAndView.addObject("error", YOUR_BASKET_IS_EMPTY);
             } else {
@@ -56,7 +56,7 @@ public class BasketController {
                 userService.addBookToUser(user.getId(), bookId, daysForReading);
                 modelAndView.addObject("basketMessage", BOOK_WAS_ADDED_TO_BASKET);
             }
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             return modelAndView;
@@ -75,7 +75,7 @@ public class BasketController {
 
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("basketMessage", BOOK_WAS_DELETED_FROM_BASKET);
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
             modelAndView.setViewName("basket");

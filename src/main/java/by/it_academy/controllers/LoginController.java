@@ -53,7 +53,7 @@ public class LoginController{
             }
 
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("books", bookService.findAllBooks());
+            modelAndView.addObject("books", bookService.findAllBooks(10));
             modelAndView.addObject("numberOfBooksInBasket",
                     userService.countUserBasketBasketCellsById(user.getId()));
 
@@ -73,7 +73,7 @@ public class LoginController{
     public ModelAndView processLogout(HttpSession httpSession) {
         httpSession.invalidate();
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("books", bookService.findAllBooks());
+        modelAndView.addObject("books", bookService.findAllBooks(10));
         return modelAndView;
     }
 

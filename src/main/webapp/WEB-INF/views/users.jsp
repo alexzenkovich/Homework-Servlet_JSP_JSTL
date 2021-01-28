@@ -56,8 +56,8 @@
                         <td>${u.authenticate.login}</td>
                         <td>${u.authenticate.password}</td>
                         <td>${u.authenticate.profileEnable}</td>
-                        <sec:authentication property="principal.id" var="userId"/>
-                        <c:if test="${u.id != userId}">
+                        <sec:authentication property="principal.authenticate.login" var="userLogin"/>
+                        <c:if test="${u.authenticate.login eq userLogin}">
                             <td>
                                 <c:if test="${u.authenticate.profileEnable == true}">
                                     <form method="post" action="<c:url value="/users/blocking"/>">
