@@ -28,6 +28,7 @@
     <div id="error">
         <c:if test="${error != null}"><h3>${error}</h3></c:if>
     </div>
+    <c:import url="templates/buttons/to_home_button.jsp"/>
     <div id="divMainTable">
         <table class="mainTable">
             <thead>
