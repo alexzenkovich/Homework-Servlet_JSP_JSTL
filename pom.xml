@@ -23,7 +23,7 @@
 
         <spring-webmvc.version>5.2.3.RELEASE</spring-webmvc.version>
         <spring-data-jpa.version>2.3.5.RELEASE</spring-data-jpa.version>
-        <spring-security-core.version>5.4.1</spring-security-core.version>
+        <spring-security-core.version>5.4.4</spring-security-core.version>
     </properties>
 
     <dependencies>
